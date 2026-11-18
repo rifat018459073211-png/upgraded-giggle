@@ -1,0 +1,1152 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আমার লাইভ অ্যাপ নির্মাতা</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #101827;
+  color: #f1f5f9;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+header {
+  padding: 18px 12px;
+  text-align: center;
+  background: #1e293b;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 23px;
+}
+
+header p {
+  color: #a5b4fc;
+  margin-bottom: 0;
+}
+
+.container {
+  padding: 12px;
+  max-width: 850px;
+  margin: auto;
+}
+
+.panel {
+  background: #1e293b;
+  padding: 13px;
+  border-radius: 13px;
+  margin-bottom: 14px;
+}
+
+h3 {
+  margin-top: 3px;
+}
+
+.tabs {
+  display: flex;
+  gap: 7px;
+}
+
+button {
+  border: 0;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  background: #334155;
+  min-height: 43px;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+.tab {
+  flex: 1;
+}
+
+.tab.active {
+  background: #6366f1;
+}
+
+.editor-wrap {
+  position: relative;
+}
+
+textarea {
+  width: 100%;
+  min-height: 280px;
+  resize: vertical;
+  padding: 13px;
+  margin-top: 10px;
+  border: 2px solid #475569;
+  border-radius: 10px;
+  background: #0b1220;
+  color: #a7f3d0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+  tab-size: 2;
+}
+
+textarea:focus {
+  border-color: #818cf8;
+}
+
+.symbols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.symbols button {
+  min-width: 42px;
+  background: #475569;
+  font-size: 18px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.run {
+  flex: 1;
+  background: #16a34a;
+}
+
+.check {
+  flex: 1;
+  background: #d97706;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.switch {
+  width: 55px;
+  height: 29px;
+  accent-color: #22c55e;
+}
+
+.status {
+  color: #a5b4fc;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+#errors {
+  margin-top: 12px;
+}
+
+.error-box {
+  padding: 12px;
+  background: #713f12;
+  border: 1px solid #facc15;
+  color: #fef3c7;
+  border-radius: 9px;
+  margin-bottom: 9px;
+  line-height: 1.6;
+}
+
+.success-box {
+  padding: 13px;
+  border-radius: 9px;
+  background: #14532d;
+  color: #bbf7d0;
+}
+
+.error-marker {
+  color: #facc15;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.device-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 10px 0;
+}
+
+.device-buttons button {
+  flex: 1;
+  background: #475569;
+}
+
+.device-buttons button.active {
+  background: #6366f1;
+}
+
+.phone-area {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px 0;
+}
+
+.phone {
+  width: 360px;
+  height: 720px;
+  max-width: 100%;
+  border: 7px solid #64748b;
+  border-radius: 35px;
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 35px #0008;
+}
+
+.notch {
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95px;
+  height: 17px;
+  border-radius: 20px;
+  background: #111827;
+  pointer-events: none;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+}
+
+.lesson {
+  line-height: 1.8;
+  color: #dbeafe;
+}
+
+.lesson strong {
+  color: #86efac;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #94a3b8;
+}
+
+@media(max-width: 400px) {
+  .phone {
+    width: 100%;
+  }
+
+  .container {
+    padding: 8px;
+  }
+
+  textarea {
+    font-size: 13px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>🚀 আমার অ্যাপ নির্মাতা</h2>
+  <p>কোড লেখো, নিজের অ্যাপ তৈরি করো</p>
+</header>
+
+<div class="container">
+
+  <!-- কোড লেখার জায়গা -->
+
+  <section class="panel">
+    <h3>📝 তোমার কোড লেখো</h3>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="html">HTML</button>
+      <button class="tab" data-tab="css">CSS</button>
+      <button class="tab" data-tab="js">JavaScript</button>
+    </div>
+
+    <div class="editor-wrap">
+      <textarea id="editor"
+        spellcheck="false"
+        autocapitalize="off"
+        autocomplete="off"
+        autocorrect="off"
+        placeholder="এখানে কোড লেখো..."></textarea>
+    </div>
+
+    <div class="symbols">
+      <button data-symbol="<">&lt;</button>
+      <button data-symbol=">">&gt;</button>
+      <button data-symbol="/">/</button>
+      <button data-symbol='"'>"</button>
+      <button data-symbol="=">=</button>
+      <button data-symbol="{">{</button>
+      <button data-symbol="}">}</button>
+      <button data-symbol="(">(</button>
+      <button data-symbol=")">)</button>
+      <button data-symbol=";">;</button>
+      <button data-symbol=":">:</button>
+      <button data-symbol="#">#</button>
+    </div>
+
+    <div class="actions">
+      <button class="run" id="run">▶ Run</button>
+      <button class="check" id="check">🔍 ভুল পরীক্ষা</button>
+    </div>
+
+    <div class="status" id="saveStatus">
+      কোড ফোনে সেভ হচ্ছে...
+    </div>
+  </section>
+
+  <!-- লাইভ সুইচ -->
+
+  <section class="panel">
+    <div class="switch-row">
+      <div>
+        <strong>⚡ লাইভ প্রিভিউ</strong>
+        <div class="status" id="liveStatus">লাইভ চালু আছে</div>
+      </div>
+
+      <input
+        type="checkbox"
+        id="live"
+        class="switch"
+        checked
+      >
+    </div>
+  </section>
+
+  <!-- ভুলের রিপোর্ট -->
+
+  <section class="panel">
+    <h3>🔍 কোডের ভুল পরীক্ষক</h3>
+    <div id="errors">
+      <div class="success-box">
+        কোড পরীক্ষা করার জন্য প্রস্তুত।
+      </div>
+    </div>
+  </section>
+
+  <!-- ফোনের মাপ -->
+
+  <section class="panel">
+    <h3>📱 ফোনের মাপ</h3>
+
+    <div class="device-buttons">
+      <button data-size="small">ছোট ফোন</button>
+      <button data-size="medium" class="active">মাঝারি ফোন</button>
+      <button data-size="large">বড় ফোন</button>
+    </div>
+
+    <div class="phone-area">
+      <div class="phone" id="phone">
+        <div class="notch"></div>
+
+        <iframe
+          id="preview"
+          title="তোমার অ্যাপের প্রিভিউ"
+          sandbox="allow-scripts"
+          srcdoc="<!DOCTYPE html><html><body style='font-family:Arial;text-align:center;padding:30px'>তোমার অ্যাপ এখানে দেখা যাবে</body></html>"
+        ></iframe>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- শেখার পাঠ -->
+
+  <section class="panel lesson">
+    <h3>📚 আজকের পাঠ — ধাপ ১</h3>
+
+    <strong>১. কেন শিখছি</strong>
+    <p>
+      HTML দিয়ে অ্যাপের কাঠামো, CSS দিয়ে সৌন্দর্য
+      এবং JavaScript দিয়ে অ্যাপের কাজ নিয়ন্ত্রণ করা হয়।
+    </p>
+
+    <strong>২. ছোট ব্যাখ্যা</strong>
+    <p>
+      HTML হলো অ্যাপের শরীর।
+      CSS হলো অ্যাপের ডিজাইন।
+      JavaScript হলো অ্যাপের বুদ্ধি।
+    </p>
+
+    <strong>৩. উদাহরণ</strong>
+    <p>
+      HTML দিয়ে একটি বোতাম বানানো যায়।
+      CSS দিয়ে বোতামের রং পরিবর্তন করা যায়।
+      JavaScript দিয়ে বোতামে চাপলে বার্তা দেখানো যায়।
+    </p>
+
+    <strong>৪. নিজের হাতে লেখার কাজ</strong>
+    <p>
+      HTML ট্যাবে একটি নতুন h2 ট্যাগ যোগ করো।
+      তার মধ্যে নিজের পছন্দের অ্যাপের নাম লেখো।
+    </p>
+
+    <strong>৫. ইঙ্গিত</strong>
+    <p>
+      h2 ট্যাগ লেখার নিয়ম:
+      &lt;h2&gt;আমার অ্যাপ&lt;/h2&gt;
+    </p>
+  </section>
+
+  <!-- পরের ধাপ -->
+
+  <section class="panel lesson">
+    <h3>📖 পরবর্তী ধাপগুলোর তালিকা</h3>
+    <p>ধাপ ২: স্ক্রিন বদলানো</p>
+    <p>ধাপ ৩: ফর্ম আর যাচাই</p>
+    <p>ধাপ ৪: তথ্য ফোনে সেভ রাখা</p>
+    <p>ধাপ ৫: বোতাম, কার্ড, তালিকা ও ডিজাইন</p>
+    <p>ধাপ ৬: ছোট ছোট অ্যাপ বানানো</p>
+    <p>ধাপ ৭: বিনা খরচে অনলাইনে রাখা</p>
+  </section>
+
+</div>
+
+<footer>
+  আমার অ্যাপ নির্মাতা ❤️
+  <br>
+  শেখো, লেখো, নিজের অ্যাপ বানাও।
+</footer>
+
+<script>
+
+// ===================================
+// ১. শুরুর লগইন প্রকল্প
+// ===================================
+
+const defaultHTML = `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>আমার অ্যাপ</title>
+</head>
+<body>
+
+<div class="login">
+  <h1>আমার অ্যাপ</h1>
+
+  <p class="note">
+    এটা শেখার নকল লগইন।
+    আসল পাসওয়ার্ড দিও না।
+  </p>
+
+  <input id="email"
+    type="text"
+    placeholder="নকল নাম বা ইমেইল">
+
+  <div class="password-box">
+    <input id="password"
+      type="password"
+      placeholder="নকল পাসওয়ার্ড">
+
+    <button id="show">দেখাও</button>
+  </div>
+
+  <p id="message"></p>
+
+  <button id="login">লগইন করো</button>
+
+  <p>পাসওয়ার্ড ভুলে গেছ?</p>
+  <p>নতুন অ্যাকাউন্ট খোলো</p>
+</div>
+
+<div id="home" hidden>
+  <h1>স্বাগতম 🎉</h1>
+  <p>তুমি সফলভাবে নকল লগইন করেছ।</p>
+  <button id="logout">বের হও</button>
+</div>
+
+</body>
+</html>`;
+
+const defaultCSS = `* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: #e0e7ff;
+  padding: 20px;
+}
+
+.login {
+  width: 100%;
+  max-width: 340px;
+  padding: 25px;
+  border-radius: 18px;
+  background: white;
+  text-align: center;
+  box-shadow: 0 5px 25px #0002;
+}
+
+h1 {
+  color: #4338ca;
+}
+
+.note {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 9px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font-size: 15px;
+}
+
+.password-box {
+  position: relative;
+}
+
+.password-box button {
+  position: absolute;
+  right: 5px;
+  top: 14px;
+  padding: 9px;
+  background: #64748b;
+}
+
+button {
+  border: 0;
+  padding: 13px;
+  border-radius: 9px;
+  color: white;
+  background: #4f46e5;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#login {
+  width: 100%;
+  background: #4f46e5;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+#message {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+#home {
+  text-align: center;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+#home h1 {
+  color: #16a34a;
+}`;
+
+const defaultJS = `const email = document.getElementById("email");
+const password = document.getElementById("password");
+const message = document.getElementById("message");
+
+const login = document.getElementById("login");
+const show = document.getElementById("show");
+
+show.addEventListener("click", function() {
+  if (password.type === "password") {
+    password.type = "text";
+    show.textContent = "লুকাও";
+  } else {
+    password.type = "password";
+    show.textContent = "দেখাও";
+  }
+});
+
+login.addEventListener("click", function() {
+
+  if (!email.value.trim() || !password.value.trim()) {
+    message.textContent = "সব ঘর পূরণ করো।";
+    return;
+  }
+
+  // এটি শুধু শেখার নকল লগইন।
+  if (email.value === "student" &&
+      password.value === "1234") {
+
+    document.querySelector(".login").hidden = true;
+    document.getElementById("home").hidden = false;
+
+  } else {
+    message.textContent = "তথ্য সঠিক নয়। আবার চেষ্টা করো।";
+  }
+
+});
+
+document.getElementById("logout").addEventListener("click", function() {
+  document.querySelector(".login").hidden = false;
+  document.getElementById("home").hidden = true;
+  email.value = "";
+  password.value = "";
+  message.textContent = "";
+});`;
+
+// ===================================
+// ২. কোড সংরক্ষণ
+// ===================================
+
+const editor = document.getElementById("editor");
+
+const keys = {
+  html: "app_html",
+  css: "app_css",
+  js: "app_js"
+};
+
+let currentTab = "html";
+
+function getCode(tab) {
+  return localStorage.getItem(keys[tab]) ??
+    ({html: defaultHTML, css: defaultCSS, js: defaultJS}[tab]);
+}
+
+function saveCurrent() {
+  localStorage.setItem(keys[currentTab], editor.value);
+
+  document.getElementById("saveStatus").textContent =
+    "✓ কোড ফোনে সেভ হয়েছে";
+}
+
+function switchTab(tab) {
+
+  if (currentTab === tab) return;
+
+  saveCurrent();
+
+  currentTab = tab;
+
+  editor.value = getCode(tab);
+
+  document.querySelectorAll(".tab").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.tab === tab
+    );
+  });
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    switchTab(button.dataset.tab);
+  });
+});
+
+editor.value = getCode("html");
+
+let timer;
+
+editor.addEventListener("input", () => {
+
+  saveCurrent();
+
+  clearTimeout(timer);
+
+  if (document.getElementById("live").checked) {
+    timer = setTimeout(runApp, 500);
+  }
+
+});
+
+// ===================================
+// ৩. কার্সরের জায়গায় চিহ্ন বসানো
+// ===================================
+
+document.querySelectorAll("[data-symbol]").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const symbol = button.dataset.symbol;
+
+    editor.setRangeText(symbol, start, end, "end");
+
+    editor.focus();
+
+    saveCurrent();
+
+    if (document.getElementById("live").checked) {
+      clearTimeout(timer);
+      timer = setTimeout(runApp, 500);
+    }
+
+  });
+
+});
+
+// ===================================
+// ৪. কোড সংগ্রহ
+// ===================================
+
+function getAllCode() {
+
+  const current = editor.value;
+
+  return {
+    html: currentTab === "html" ? current : getCode("html"),
+    css: currentTab === "css" ? current : getCode("css"),
+    js: currentTab === "js" ? current : getCode("js")
+  };
+
+}
+
+// ===================================
+// ৫. HTML ভুল পরীক্ষা
+// ===================================
+
+function checkHTML(code) {
+
+  const errors = [];
+
+  const known = new Set((
+    "html head body title meta link style script div span p " +
+    "h1 h2 h3 h4 h5 h6 a button input img br hr " +
+    "ul ol li form label textarea select option " +
+    "table tr td th thead tbody footer header main " +
+    "section article nav strong b i em small pre code " +
+    "iframe video audio source canvas details summary " +
+    "figure figcaption blockquote sup sub"
+  ).split(/\s+/));
+
+  const voidTags = new Set([
+    "area", "base", "br", "col", "embed",
+    "hr", "img", "input", "link", "meta",
+    "param", "source", "track", "wbr"
+  ]);
+
+  const stack = [];
+
+  const tokens = /<!--[\s\S]*?-->|<![^>]*>|<\/?[a-zA-Z][^>]*>/g;
+
+  let match;
+
+  while ((match = tokens.exec(code)) !== null) {
+
+    const token = match[0];
+
+    if (token.startsWith("<!")) continue;
+
+    const closing = token.startsWith("</");
+
+    const nameMatch = token.match(/^<\/?\s*([a-zA-Z0-9-]+)/);
+
+    if (!nameMatch) continue;
+
+    const name = nameMatch[1].toLowerCase();
+
+    const line = code.slice(0, match.index).split("\n").length;
+
+    if (!known.has(name)) {
+      errors.push({
+        line,
+        message: "অচেনা HTML ট্যাগ: " + name,
+        fix: "সঠিক HTML ট্যাগ ব্যবহার করো।"
+      });
+      continue;
+    }
+
+    if (voidTags.has(name)) continue;
+
+    if (closing) {
+
+      if (stack.length === 0) {
+
+        errors.push({
+          line,
+          message: name + " ট্যাগের আগে খোলার ট্যাগ নেই।",
+          fix: "আগে সঠিক খোলার ট্যাগ লেখো।"
+        });
+
+      } else if (stack[stack.length - 1].name === name) {
+
+        stack.pop();
+
+      } else {
+
+        const index = stack.map(item => item.name).lastIndexOf(name);
+
+        if (index === -1) {
+
+          errors.push({
+            line,
+            message: name + " ট্যাগের ক্রম ভুল।",
+            fix: "খোলা ট্যাগের সঙ্গে মিলিয়ে বন্ধ করো।"
+          });
+
+        } else {
+
+          errors.push({
+            line,
+            message: name + " ট্যাগ ভুল ক্রমে বন্ধ হয়েছে।",
+            fix: "ভেতরের ট্যাগ আগে বন্ধ করো।"
+          });
+
+          stack.splice(index);
+        }
+      }
+
+    } else if (!/\/>$/.test(token)) {
+
+      stack.push({name, line});
+
+    }
+  }
+
+  stack.forEach(item => {
+    errors.push({
+      line: item.line,
+      message: item.name + " ট্যাগ বন্ধ করা হয়নি।",
+      fix: "</" + item.name + "> যোগ করো।"
+    });
+  });
+
+  return errors;
+}
+
+// ===================================
+// ৬. CSS ভুল পরীক্ষা
+// ===================================
+
+function checkCSS(code) {
+
+  const errors = [];
+
+  const lines = code.split("\n");
+
+  let depth = 0;
+  let inComment = false;
+
+  lines.forEach((line, index) => {
+
+    let clean = line.trim();
+
+    if (!clean) return;
+
+    if (clean.startsWith("/*")) inComment = true;
+    if (inComment) {
+      if (clean.includes("*/")) inComment = false;
+      return;
+    }
+
+    if (clean.startsWith("//")) return;
+
+    if (clean.includes("{")) depth++;
+
+    if (depth > 0 &&
+        !clean.startsWith("@") &&
+        !clean.startsWith("}") &&
+        !clean.includes("{")) {
+
+      if (!clean.includes(":")) {
+
+        errors.push({
+          line: index + 1,
+          message: "CSS-এ কোলন (:) নেই।",
+          fix: "যেমন color: red; লিখো।"
+        });
+
+      } else if (
+        !clean.endsWith(";") &&
+        !clean.endsWith("{") &&
+        !clean.endsWith("}") &&
+        !clean.startsWith("--")
+      ) {
+
+        errors.push({
+          line: index + 1,
+          message: "CSS-এর সেমিকোলন (;) বাদ পড়েছে।",
+          fix: "লাইনের শেষে ; বসাও।"
+        });
+
+      }
+    }
+
+    if (clean.includes("}")) depth--;
+  });
+
+  if (depth !== 0) {
+    errors.push({
+      line: lines.length,
+      message: "CSS-এর { এবং } ঠিকমতো মেলেনি।",
+      fix: "প্রতিটি খোলা { এর জন্য } দাও।"
+    });
+  }
+
+  return errors;
+}
+
+// ===================================
+// ৭. JavaScript ভুল পরীক্ষা
+// ===================================
+
+function checkJS(code) {
+
+  try {
+
+    // শুধু syntax পরীক্ষা; কোড চালানো হয় না।
+    new Function(code);
+
+    return [];
+
+  } catch (error) {
+
+    let line = 1;
+
+    const match = String(error.stack || "").match(
+      /<anonymous>:(\d+):/
+    );
+
+    if (match) {
+      line = Math.max(1, Number(match[1]) - 3);
+    }
+
+    let message = "JavaScript লেখার নিয়মে ভুল আছে।";
+
+    if (error instanceof SyntaxError) {
+      message = "JavaScript-এর বানান বা চিহ্নে ভুল আছে।";
+    }
+
+    return [{
+      line,
+      message,
+      fix: "বন্ধনী, কোটেশন এবং সেমিকোলন পরীক্ষা করো।"
+    }];
+
+  }
+}
+
+// ===================================
+// ৮. ভুলের রিপোর্ট দেখানো
+// ===================================
+
+function checkAll() {
+
+  saveCurrent();
+
+  const code = getAllCode();
+
+  let errors = [];
+
+  if (currentTab === "html") {
+    errors = checkHTML(code.html);
+  }
+
+  if (currentTab === "css") {
+    errors = checkCSS(code.css);
+  }
+
+  if (currentTab === "js") {
+    errors = checkJS(code.js);
+  }
+
+  const box = document.getElementById("errors");
+
+  if (errors.length === 0) {
+
+    box.innerHTML = `
+      <div class="success-box">
+        ✓ কোনো ভুল পাওয়া যায়নি।
+      </div>
+    `;
+
+    return;
+
+  }
+
+  box.innerHTML = `
+    <div class="error-box">
+      ⚠️ মোট ${errors.length}টি সমস্যা পাওয়া গেছে।
+    </div>
+  `;
+
+  errors.forEach(error => {
+
+    const item = document.createElement("div");
+
+    item.className = "error-box";
+
+    item.innerHTML = `
+      <strong>লাইন নম্বর: ${error.line}</strong>
+      <div>সমস্যা: ${escapeText(error.message)}</div>
+      <div>সমাধান: ${escapeText(error.fix)}</div>
+      <span class="error-marker">▲ ভুলের অবস্থান</span>
+    `;
+
+    box.appendChild(item);
+
+  });
+
+}
+
+function escapeText(text) {
+  return String(text).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+// ===================================
+// ৯. নিরাপদ লাইভ প্রিভিউ
+// ===================================
+
+function runApp() {
+
+  saveCurrent();
+
+  checkAll();
+
+  const code = getAllCode();
+
+  const documentCode = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+      <style>${code.css}</style>
+    </head>
+
+    <body>
+
+      ${code.html.replace(
+        /<!DOCTYPE[\s\S]*?>|<html[\s\S]*?>|<\/html>|<head[\s\S]*?>|<\/head>|<body[\s\S]*?>|<\/body>/gi,
+        ""
+      )}
+
+      <script>
+        try {
+          ${code.js}
+        } catch(error) {
+          document.body.insertAdjacentHTML(
+            "beforeend",
+            '<p style="color:red;padding:10px">অ্যাপে একটি JavaScript সমস্যা হয়েছে।</p>'
+          );
+        }
+      <\/script>
+
+    </body>
+    </html>
+  `;
+
+  document.getElementById("preview").srcdoc =
+    documentCode;
+
+}
+
+// ===================================
+// ১০. Run ও Check বোতাম
+// ===================================
+
+document.getElementById("run").addEventListener(
+  "click", runApp
+);
+
+document.getElementById("check").addEventListener(
+  "click", checkAll
+);
+
+// ===================================
+// ১১. লাইভ চালু ও বন্ধ
+// ===================================
+
+document.getElementById("live").addEventListener(
+  "change",
+  event => {
+
+    const enabled = event.target.checked;
+
+    document.getElementById("liveStatus").textContent =
+      enabled ? "লাইভ চালু আছে" : "লাইভ বন্ধ আছে";
+
+    clearTimeout(timer);
+
+    if (enabled) {
+      timer = setTimeout(runApp, 100);
+    }
+
+  }
+);
+
+// ===================================
+// ১২. ফোনের মাপ পরিবর্তন
+// ===================================
+
+const phone = document.getElementById("phone");
+
+const sizes = {
+  small: "280px",
+  medium: "360px",
+  large: "420px"
+};
+
+document.querySelectorAll("[data-size]").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    phone.style.width = sizes[button.dataset.size];
+
+    document.querySelectorAll("[data-size]").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+  });
+
+});
+
+// ===================================
+// ১৩. প্রথমবার অ্যাপ চালু
+// ===================================
+
+runApp();
+
+</script>
+
+</body>
+</html>
