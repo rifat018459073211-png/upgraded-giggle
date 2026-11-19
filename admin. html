@@ -1,1 +1,1545 @@
 
+```html
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>কোড-গুরু স্টুডিও | শূন্য থেকে মোবাইল অ্যাপ ও কোডিং</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Hind Siliguri & Noto Sans Bengali + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', '"Noto Sans Bengali"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Smooth natural scrolling for spacious layout */
+        html, body {
+            scroll-behavior: smooth;
+            background-color: #0b0e17;
+            color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Custom sleek scrollbars */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111625;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3856;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* ==================== LARGE COMFORTABLE SYNTAX HIGHLIGHTED EDITOR ==================== */
+        .editor-wrapper {
+            position: relative;
+            flex: 1;
+            min-height: 380px;
+            background: #141927;
+            overflow: hidden;
+        }
+
+        .code-font-metrics {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            line-height: 1.7;
+            letter-spacing: 0px;
+            tab-size: 4;
+            -moz-tab-size: 4;
+            padding: 16px;
+            margin: 0;
+            border: 0;
+            white-space: pre;
+            word-wrap: normal;
+            overflow-x: auto;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        #highlightBackdrop {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            color: #e2e8f0;
+            z-index: 1;
+        }
+
+        .code-textarea {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: transparent;
+            caret-color: #38bdf8;
+            resize: none;
+            z-index: 2;
+        }
+
+        .code-textarea::selection {
+            background: rgba(56, 189, 248, 0.32);
+        }
+
+        .code-textarea:focus {
+            outline: none;
+        }
+
+        /* VS Code Dark+ Inspired Syntax Colors */
+        .tok-tag { color: #f472b6; font-weight: 600; }
+        .tok-attr { color: #fbbf24; }
+        .tok-str { color: #4ade80; }
+        .tok-num { color: #fb923c; }
+        .tok-kw { color: #c084fc; font-weight: 600; }
+        .tok-fn { color: #60a5fa; }
+        .tok-comm { color: #64748b; font-style: italic; }
+        .tok-prop { color: #38bdf8; }
+
+        /* ==================== REALISTIC SMARTPHONE MOCKUP FRAME ==================== */
+        .phone-chassis {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 4px solid #334155;
+            box-shadow: 
+                0 25px 60px -12px rgba(0, 0, 0, 0.85),
+                0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 0 12px rgba(255, 255, 255, 0.05);
+            border-radius: 44px;
+            transition: all 0.3s ease;
+        }
+
+        .phone-fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 60 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            height: 100dvh !important;
+            border-radius: 0 !important;
+            border: none !important;
+            margin: 0 !important;
+        }
+
+        /* ==================== ERGONOMIC SYMBOL KEYBOARD DOCK ==================== */
+        .sym-btn {
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.07s ease, background-color 0.1s ease, border-color 0.1s ease;
+        }
+        .sym-btn:active {
+            transform: scale(0.91);
+            background-color: #38bdf8;
+            color: #090d16;
+            border-color: #38bdf8;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-36 selection:bg-sky-500/30">
+
+    <!-- ==================== 1. SPACIOUS TOP HEADER BAR ==================== -->
+    <header class="sticky top-0 z-40 bg-[#0d1220]/95 backdrop-blur-md border-b border-slate-800/90 px-4 py-3 shadow-lg">
+        <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand Title & Level Badge -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-600 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-blue-500/25 border border-white/15">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg sm:text-xl font-bold text-white tracking-tight">কোড-গুরু স্টুডিও</h1>
+                        <span id="levelBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                            লেভেল ১ • ০ XP
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">একদম শূন্য থেকে কোডিং ও মোবাইল অ্যাপ তৈরির ল্যাব</p>
+                </div>
+            </div>
+
+            <!-- Primary Navigation Buttons -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="openModal('lessonsModal')" class="px-3.5 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/35 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer">
+                    <span>📚</span> পাঠশালা
+                </button>
+                <button onclick="openModal('challengesModal')" class="px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/35 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer">
+                    <span>🏆</span> চ্যালেঞ্জ
+                </button>
+                <button onclick="openModal('templatesModal')" class="px-3.5 py-2 rounded-xl bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/35 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer">
+                    <span>🎮</span> প্রজেক্ট
+                </button>
+                <button onclick="manualSaveCode()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer" title="কোড সেভ করুন">
+                    <span>💾</span> সেভ
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN SCROLLABLE CONTAINER ==================== -->
+    <main class="max-w-5xl mx-auto px-3 sm:px-6 pt-5 space-y-8">
+
+        <!-- ==================== 2. CLEAR INSTRUCTIONAL BANNER ==================== -->
+        <section class="bg-gradient-to-r from-sky-950/90 via-indigo-950/90 to-slate-900 border border-sky-500/35 rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-300 text-lg shrink-0 mt-0.5">
+                    ✍️
+                </div>
+                <div>
+                    <h2 class="text-sm sm:text-base font-bold text-white leading-snug">
+                        নিচের স্ক্রিনে নিজের হাতে কোড লিখুন — নিচে স্ক্রল করলে মোবাইলের মতো লাইভ ফলাফল দেখতে পাবেন
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-1">
+                        নিচের বিশেষ চিহ্ন বার থেকে যেকোনো ব্র্যাকেট বা চিহ্ন এক চাপে বসাতে পারবেন। সব কোড অটোমেটিক সেভ থাকে।
+                    </p>
+                </div>
+            </div>
+            <a href="#mobileViewSection" class="shrink-0 px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md transition">
+                <span>📱 মোবাইল স্ক্রিন দেখুন</span>
+                <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </section>
+
+        <!-- Active Challenge Banner (Visible when a challenge is active) -->
+        <section id="activeChallengeBanner" class="hidden bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 border-2 border-emerald-500/50 rounded-2xl p-4 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+                <span class="text-2xl">🎯</span>
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">চলমান কোডিং চ্যালেঞ্জ</span>
+                    <h3 id="challengeTitleDisplay" class="text-base font-bold text-white">চ্যালেঞ্জ শিরোনাম</h3>
+                    <p id="challengeTaskDisplay" class="text-xs sm:text-sm text-slate-200 mt-0.5">কাজের বিবরণ...</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                <button onclick="verifyActiveChallenge()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm shadow-lg transition cursor-pointer">
+                    যাচাই করুন ✓
+                </button>
+                <button onclick="exitChallenge()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer">
+                    বন্ধ করুন
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== 3. LARGE COMFORTABLE CODE EDITOR SECTION ==================== -->
+        <section class="bg-[#111625] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
+            
+            <!-- Mode Switcher & File Tabs Header -->
+            <div class="bg-[#161d30] border-b border-slate-800 p-3 flex flex-wrap items-center justify-between gap-3">
+                <!-- Mode Switcher -->
+                <div class="flex bg-[#0c101b] p-1.5 rounded-2xl border border-slate-800">
+                    <button id="modeWebBtn" onclick="switchMode('web')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer">
+                        <span>🌐</span> ওয়েবসাইট (HTML/CSS/JS)
+                    </button>
+                    <button id="modeLogicBtn" onclick="switchMode('logic')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer">
+                        <span>🐍</span> পাইথন / লজিক
+                    </button>
+                </div>
+
+                <!-- File Tabs (Web Mode) -->
+                <div id="webTabsGroup" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                    <button onclick="switchWebTab('html')" id="tab-html" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold bg-[#141927] text-orange-400 border border-slate-600 flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-brands fa-html5"></i> index.html
+                    </button>
+                    <button onclick="switchWebTab('css')" id="tab-css" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-brands fa-css3-alt text-sky-400"></i> style.css
+                    </button>
+                    <button onclick="switchWebTab('js')" id="tab-js" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-brands fa-js text-yellow-400"></i> app.js
+                    </button>
+                </div>
+
+                <!-- File Badge (Python/Logic Mode) -->
+                <div id="logicTabBadge" class="hidden flex items-center gap-2">
+                    <span class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold bg-[#141927] text-emerald-400 border border-slate-600 flex items-center gap-1.5">
+                        <i class="fa-brands fa-python"></i> main.py
+                    </span>
+                </div>
+            </div>
+
+            <!-- Editor Quick Action Toolbar -->
+            <div class="bg-[#0f1422] border-b border-slate-800/90 px-3 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <button onclick="runCode(true)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 active:scale-95 text-slate-950 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition cursor-pointer">
+                        <span>▶</span> রান করুন
+                    </button>
+
+                    <button id="autoRunBtn" onclick="toggleAutoRun()" class="px-3 py-2 rounded-xl bg-sky-500/20 border border-sky-500/40 text-sky-300 font-bold text-xs sm:text-sm flex items-center gap-1 transition cursor-pointer">
+                        <span>⚡</span> অটো-রান: চালু
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <button onclick="formatCode()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold flex items-center gap-1 transition cursor-pointer">
+                        <span>✨</span> ফরম্যাট
+                    </button>
+                    <button onclick="copyCurrentCode()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold flex items-center gap-1 transition cursor-pointer">
+                        <span>📋</span> কপি
+                    </button>
+                    <button onclick="confirmClearEditor()" class="px-3 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-red-300 border border-red-500/30 text-xs sm:text-sm font-semibold flex items-center gap-1 transition cursor-pointer">
+                        <span>🗑️</span> মুছুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tall, Crystal-Clear Code Writing Canvas with Line Numbers & Syntax Highlighting -->
+            <div class="flex relative min-h-[390px] sm:min-h-[430px] bg-[#141927]">
+                <!-- Line Numbers Column -->
+                <div id="lineNumbers" class="w-12 bg-[#0e121d] text-slate-500 font-mono text-[16px] py-4 text-right pr-3 select-none overflow-hidden leading-[1.7] border-r border-slate-800/80 shrink-0">
+                    1
+                </div>
+
+                <!-- Layered Backdrop + Editable Textarea -->
+                <div class="editor-wrapper">
+                    <pre id="highlightBackdrop" aria-hidden="true" class="code-font-metrics"></pre>
+                    <textarea
+                        id="codeEditor"
+                        spellcheck="false"
+                        autocapitalize="off"
+                        autocomplete="off"
+                        autocorrect="off"
+                        placeholder="এখানে আপনার কোড লিখুন..."
+                        class="code-textarea code-font-metrics"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Editor Bottom Telemetry Footer -->
+            <div class="bg-[#0e121d] border-t border-slate-800/90 px-4 py-2 flex items-center justify-between text-xs text-slate-400 font-mono">
+                <div class="flex items-center gap-3">
+                    <span class="text-emerald-400 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> রেডি
+                    </span>
+                    <span id="saveStatusText">অটো-সেভ চালু</span>
+                </div>
+                <div id="cursorStats">লাইন ১, কলাম ১</div>
+            </div>
+        </section>
+
+        <!-- Beginner-Friendly Error Helper Card (Appears automatically if there's a syntax mistake) -->
+        <section id="errorHelperCard" class="hidden bg-red-950/90 border-2 border-red-500/60 rounded-2xl p-4 shadow-xl flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3">
+                <span class="text-2xl">⚠️</span>
+                <div>
+                    <h3 class="text-sm sm:text-base font-bold text-red-200">কোডে একটি ছোট ভুল ধরা পড়েছে:</h3>
+                    <p id="errorHelperText" class="text-xs sm:text-sm text-red-100 mt-1 leading-relaxed"></p>
+                </div>
+            </div>
+            <button onclick="hideErrorCard()" class="p-2 rounded-xl bg-red-900/60 hover:bg-red-800 text-red-200 text-xs font-bold">
+                ঠিক আছে
+            </button>
+        </section>
+
+        <!-- ==================== 4. REALISTIC LARGE MOBILE PHONE VIEW SECTION ==================== -->
+        <section id="mobileViewSection" class="pt-2 pb-6 space-y-4">
+            
+            <!-- Section Header Label & Phone Controls -->
+            <div class="bg-[#111625] border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-lg">
+                <div>
+                    <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                        <span>📱</span> লাইভ মোবাইল ভিউ (আপনার কোড এখানে অ্যাপ হিসেবে চলবে)
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        উপরে যা কোড লিখবেন, নিচের ফোনের স্ক্রিনে ঠিক সেভাবেই কাজ করবে
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="runCode(true)" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition cursor-pointer">
+                        <span>🔄</span> রিলোড
+                    </button>
+                    <button onclick="togglePhoneFullscreen()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md transition cursor-pointer">
+                        <span>[ ]</span> ফুলস্ক্রিন
+                    </button>
+                </div>
+            </div>
+
+            <!-- REALISTIC SMARTPHONE MOCKUP CHASSIS -->
+            <div id="phoneChassis" class="phone-chassis w-full max-w-[430px] mx-auto overflow-hidden flex flex-col">
+                
+                <!-- Phone Top Status Bar (9:41, Notch, 5G, Battery) -->
+                <div class="bg-[#090d16] px-6 pt-3 pb-2 flex items-center justify-between text-xs font-mono text-slate-300 select-none shrink-0">
+                    <span class="font-bold text-white">9:41</span>
+                    <!-- Dynamic Island / Speaker Notch -->
+                    <div class="w-24 h-5 bg-black rounded-full border border-slate-800 flex items-center justify-end px-2">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500/60"></span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-[11px]">
+                        <span class="font-bold text-emerald-400">5G</span>
+                        <i class="fa-solid fa-wifi"></i>
+                        <i class="fa-solid fa-battery-full text-emerald-400"></i>
+                    </div>
+                </div>
+
+                <!-- Phone Browser / App Address Bar -->
+                <div class="bg-[#111827] px-3 py-2 border-b border-slate-800 flex items-center justify-between gap-2 shrink-0">
+                    <div class="flex-1 bg-[#1e293b] rounded-xl px-3 py-1.5 flex items-center justify-between text-xs font-mono text-slate-300">
+                        <span class="flex items-center gap-1.5 truncate">
+                            <i class="fa-solid fa-lock text-emerald-400 text-[10px]"></i>
+                            <span id="phoneUrlLabel">localhost:3000/app</span>
+                        </span>
+                        <button onclick="runCode(true)" class="text-slate-400 hover:text-white" title="রিলোড">
+                            <i class="fa-solid fa-rotate-right text-[11px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Switch between App Screen & Console inside Phone -->
+                    <div class="flex bg-[#0f172a] p-1 rounded-xl border border-slate-800 shrink-0">
+                        <button id="phoneTabApp" onclick="switchPhoneScreen('app')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-500 text-slate-950 transition">
+                            অ্যাপ
+                        </button>
+                        <button id="phoneTabConsole" onclick="switchPhoneScreen('console')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition">
+                            কনসোল <span id="phoneConsoleCount" class="hidden ml-0.5 px-1.5 rounded-full bg-emerald-500 text-slate-950 text-[10px]">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Exit Fullscreen Button (Only shown in fullscreen) -->
+                    <button id="exitPhoneFullscreenBtn" onclick="togglePhoneFullscreen()" class="hidden px-2.5 py-1.5 rounded-xl bg-red-500 text-white text-xs font-bold">
+                        ✕ বন্ধ
+                    </button>
+                </div>
+
+                <!-- Phone Screen Viewport (Tall 560px+ Interactive Display) -->
+                <div class="relative flex-1 min-h-[550px] bg-white flex flex-col overflow-hidden">
+                    
+                    <!-- Web App Live Iframe -->
+                    <iframe id="livePreviewFrame" class="w-full flex-1 min-h-[550px] border-0 bg-white" sandbox="allow-scripts allow-modals"></iframe>
+
+                    <!-- Mobile Terminal / Python Console Screen -->
+                    <div id="phoneConsoleView" class="hidden flex-1 min-h-[550px] bg-[#090d16] text-slate-100 flex flex-col">
+                        <div class="px-4 py-2.5 bg-[#111827] border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+                                <i class="fa-solid fa-terminal"></i> মোবাইল টার্মিনাল আউটপুট
+                            </span>
+                            <button onclick="clearConsole()" class="text-xs text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-slate-800">
+                                পরিষ্কার করুন
+                            </button>
+                        </div>
+
+                        <div id="consoleOutputList" class="flex-1 p-4 font-mono text-sm overflow-y-auto space-y-2.5 select-text">
+                            <div class="text-slate-500 italic text-xs">এখানে আপনার পাইথন বা জাভাস্ক্রিপ্ট কোডের ফলাফল দেখা যাবে...</div>
+                        </div>
+
+                        <!-- Interactive Terminal Command Input -->
+                        <form onsubmit="handleTerminalCommand(event)" class="p-3 bg-[#111827] border-t border-slate-800 flex items-center gap-2">
+                            <span class="text-emerald-400 font-mono font-bold text-sm">❯</span>
+                            <input id="terminalInput" type="text" placeholder="হিসাব বা কোড লিখে Enter দিন (যেমন: 50 * 12)" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-sky-400">
+                            <button type="submit" class="px-3.5 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs">
+                                চালান
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Phone Bottom Home Indicator Bar -->
+                <div class="bg-[#090d16] py-2.5 flex items-center justify-center shrink-0">
+                    <div class="w-32 h-1.5 rounded-full bg-slate-600"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== 5. FIXED ERGONOMIC CODING SYMBOL KEYBOARD DOCK ==================== -->
+    <footer class="fixed bottom-0 left-0 right-0 z-50 bg-[#0d1220]/98 backdrop-blur-lg border-t border-slate-700/90 px-2 pt-2 pb-2.5 shadow-[0_-10px_30px_rgba(0,0,0,0.75)]">
+        <div class="max-w-5xl mx-auto space-y-1.5">
+            
+            <!-- ROW 1: Smart Snippets & Cursor Navigation -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                <button type="button" onclick="moveCursor(-1)" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-mono text-xs font-bold" title="কার্সর বামে নিন">◀</button>
+                <button type="button" onclick="moveCursor(1)" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-mono text-xs font-bold" title="কার্সর ডানে নিন">▶</button>
+                <button type="button" onclick="insertText('    ')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sky-300 font-mono text-xs font-bold">Tab ⇥</button>
+                <button type="button" onclick="insertSmartNewline()" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-emerald-300 font-mono text-xs font-bold">Enter ↵</button>
+                <button type="button" onclick="undoEdit()" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold">Undo ↩</button>
+                
+                <!-- Quick Coding Snippets -->
+                <button type="button" onclick="insertPaired('<div>', '</div>')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-pink-300 font-mono text-xs font-bold">&lt;div&gt;</button>
+                <button type="button" onclick="insertPaired('print(&quot;', '&quot;)')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-emerald-300 font-mono text-xs font-bold">print()</button>
+                <button type="button" onclick="insertPaired('{', '}')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-yellow-300 font-mono text-xs font-bold">{}</button>
+                <button type="button" onclick="insertPaired('(', ')')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-sky-300 font-mono text-xs font-bold">()</button>
+                <button type="button" onclick="insertPaired('&quot;', '&quot;')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-green-300 font-mono text-xs font-bold">""</button>
+                <button type="button" onclick="insertPaired('\'', '\'')" class="sym-btn shrink-0 px-3 py-2 rounded-xl bg-[#192136] border border-slate-700 text-green-300 font-mono text-xs font-bold">''</button>
+            </div>
+
+            <!-- ROW 2: All Essential Coding Symbols -->
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                <button type="button" onclick="insertText('<')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-pink-300 font-mono text-base font-bold">&lt;</button>
+                <button type="button" onclick="insertText('>')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-pink-300 font-mono text-base font-bold">&gt;</button>
+                <button type="button" onclick="insertText('/')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-amber-300 font-mono text-base font-bold">/</button>
+                <button type="button" onclick="insertText('{')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-yellow-300 font-mono text-base font-bold">{</button>
+                <button type="button" onclick="insertText('}')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-yellow-300 font-mono text-base font-bold">}</button>
+                <button type="button" onclick="insertText('(')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-sky-300 font-mono text-base font-bold">(</button>
+                <button type="button" onclick="insertText(')')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-sky-300 font-mono text-base font-bold">)</button>
+                <button type="button" onclick="insertText('[')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-purple-300 font-mono text-base font-bold">[</button>
+                <button type="button" onclick="insertText(']')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-purple-300 font-mono text-base font-bold">]</button>
+                <button type="button" onclick="insertText(';')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-indigo-300 font-mono text-base font-bold">;</button>
+                <button type="button" onclick="insertText(':')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-indigo-300 font-mono text-base font-bold">:</button>
+                <button type="button" onclick="insertText('&quot;')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-emerald-300 font-mono text-base font-bold">"</button>
+                <button type="button" onclick="insertText('\'')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-emerald-300 font-mono text-base font-bold">'</button>
+                <button type="button" onclick="insertText('=')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-sky-300 font-mono text-base font-bold">=</button>
+                <button type="button" onclick="insertText('+')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">+</button>
+                <button type="button" onclick="insertText('-')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">-</button>
+                <button type="button" onclick="insertText('*')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">*</button>
+                <button type="button" onclick="insertText('!')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-red-300 font-mono text-base font-bold">!</button>
+                <button type="button" onclick="insertText('&')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">&amp;</button>
+                <button type="button" onclick="insertText('|')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">|</button>
+                <button type="button" onclick="insertText('_')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">_</button>
+                <button type="button" onclick="insertText('$')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-emerald-300 font-mono text-base font-bold">$</button>
+                <button type="button" onclick="insertText('#')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-orange-300 font-mono text-base font-bold">#</button>
+                <button type="button" onclick="insertText('@')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-cyan-300 font-mono text-base font-bold">@</button>
+                <button type="button" onclick="insertText('.')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">.</button>
+                <button type="button" onclick="insertText(',')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-white font-mono text-base font-bold">,</button>
+                <button type="button" onclick="insertText('?')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-amber-300 font-mono text-base font-bold">?</button>
+                <button type="button" onclick="insertText('\\')" class="sym-btn shrink-0 min-w-[40px] py-2 rounded-xl bg-[#161e31] border border-slate-700/90 text-slate-300 font-mono text-base font-bold">\</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 6. MODALS (LESSONS, PROJECTS, CHALLENGES) ==================== -->
+    
+    <!-- LESSONS MODAL (পাঠশালা) -->
+    <div id="lessonsModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-[#131929] border border-slate-700 w-full sm:max-w-2xl max-h-[88dvh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-[#0d1220]">
+                <div>
+                    <h2 class="text-lg font-bold text-amber-300 flex items-center gap-2">
+                        <span>📚</span> কোডিং পাঠশালা (শূন্য থেকে শুরু)
+                    </h2>
+                    <p class="text-xs text-slate-400">যেকোনো পাঠ লোড করে কোড বদলে নিজে পরীক্ষা করুন</p>
+                </div>
+                <button onclick="closeModal('lessonsModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="lessonsList" class="p-4 overflow-y-auto space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- PROJECTS MODAL (প্রজেক্ট গ্যালারি) -->
+    <div id="templatesModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-[#131929] border border-slate-700 w-full sm:max-w-2xl max-h-[88dvh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-[#0d1220]">
+                <div>
+                    <h2 class="text-lg font-bold text-purple-300 flex items-center gap-2">
+                        <span>🎮</span> রেডিমেড মোবাইল অ্যাপ ও গেম গ্যালারি
+                    </h2>
+                    <p class="text-xs text-slate-400">এক ক্লিকে লোড করে ফোনের স্ক্রিনে খেলুন ও কোড দেখুন</p>
+                </div>
+                <button onclick="closeModal('templatesModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="templatesList" class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <!-- CHALLENGES MODAL (কোডিং চ্যালেঞ্জ) -->
+    <div id="challengesModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-[#131929] border border-slate-700 w-full sm:max-w-2xl max-h-[88dvh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-[#0d1220]">
+                <div>
+                    <h2 class="text-lg font-bold text-emerald-300 flex items-center gap-2">
+                        <span>🏆</span> কোডিং চ্যালেঞ্জ ও XP মিশন
+                    </h2>
+                    <p class="text-xs text-slate-400">ছোট সমস্যা সমাধান করে XP জিতুন এবং লেভেল বাড়ান</p>
+                </div>
+                <button onclick="closeModal('challengesModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="challengesList" class="p-4 overflow-y-auto space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Dialog -->
+    <div id="confirmDialog" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
+        <div class="bg-[#161d30] border border-slate-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+            <h3 class="text-base font-bold text-white mb-2">কোড মুছে ফেলবেন?</h3>
+            <p class="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">
+                বর্তমান ফাইলের সব কোড মুছে নতুন করে লেখার জন্য পরিষ্কার করা হবে।
+            </p>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeConfirmDialog()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-bold">না, থাকুক</button>
+                <button id="confirmClearBtn" class="px-4 py-2 rounded-xl bg-red-500 text-white text-xs font-bold">হ্যাঁ, মুছে ফেলুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Notification -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 bg-slate-900/95 border border-sky-500/50 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-200 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">সম্পন্ন হয়েছে!</span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT STUDIO ENGINE ==================== -->
+    <script>
+        // --- 1. APPLICATION STATE ---
+        const state = {
+            mode: 'web', // 'web' or 'logic'
+            activeWebTab: 'html', // 'html', 'css', 'js'
+            phoneScreen: 'app', // 'app' or 'console'
+            autoRun: true,
+            isPhoneFullscreen: false,
+            xp: 0,
+            completedChallenges: [],
+            activeChallengeId: null,
+            undoStack: [],
+            consoleLogs: [],
+            code: {
+                html: `<!-- স্বাগতম! এটি আপনার মোবাইল অ্যাপের কোড -->\n<div class="app-card">\n  <span class="pill">📱 আমার প্রথম অ্যাপ</span>\n  <h1>হ্যালো কোডার! 🚀</h1>\n  <p>উপরের এডিটরে লেখা বদলান, নিচের ফোনে সাথে সাথে পরিবর্তন দেখুন!</p>\n  <button onclick="changeTheme()">রঙ ও বার্তা বদলাও ✨</button>\n  <div id="counterBox">ক্লিক সংখ্যা: <b id="count">0</b></div>\n</div>`,
+                css: `body {\n  margin: 0;\n  font-family: system-ui, sans-serif;\n  background: linear-gradient(160deg, #0f172a, #1e1b4b);\n  color: white;\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 20px;\n  box-sizing: border-box;\n}\n\n.app-card {\n  background: rgba(255, 255, 255, 0.08);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.16);\n  border-radius: 26px;\n  padding: 28px 22px;\n  text-align: center;\n  width: 100%;\n  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);\n}\n\n.pill {\n  background: rgba(56, 189, 248, 0.2);\n  color: #38bdf8;\n  padding: 5px 14px;\n  border-radius: 99px;\n  font-size: 13px;\n  font-weight: bold;\n}\n\nh1 {\n  font-size: 26px;\n  margin: 16px 0 10px;\n}\n\np {\n  color: #cbd5e1;\n  font-size: 15px;\n  line-height: 1.6;\n}\n\nbutton {\n  margin-top: 16px;\n  width: 100%;\n  padding: 14px;\n  border: none;\n  border-radius: 14px;\n  background: linear-gradient(135deg, #38bdf8, #6366f1);\n  color: white;\n  font-size: 16px;\n  font-weight: bold;\n  cursor: pointer;\n  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);\n}\n\nbutton:active {\n  transform: scale(0.96);\n}\n\n#counterBox {\n  margin-top: 16px;\n  font-size: 14px;\n  color: #94a3b8;\n}`,
+                js: `let clicks = 0;\nconst themes = [\n  'linear-gradient(160deg, #0f172a, #1e1b4b)',\n  'linear-gradient(160deg, #064e3b, #022c22)',\n  'linear-gradient(160deg, #4c1d95, #1e1b4b)',\n  'linear-gradient(160deg, #7c2d12, #1c1917)'\n];\n\nfunction changeTheme() {\n  clicks++;\n  document.getElementById('count').innerText = clicks;\n  document.body.style.background = themes[clicks % themes.length];\n  console.log("বাটন ক্লিক হয়েছে:", clicks);\n}`,
+                logic: `# পাইথন ও লজিক স্টুডিও (বাংলা ও ইংরেজি সাপোর্টেড)\n# নিচে কোড লিখুন, নিচের ফোনের টার্মিনালে ফলাফল দেখুন!\n\nনাম = "রাফি"\nবয়স = 20\n\nprint("স্বাগতম,", নাম)\n\nif বয়স >= 18:\n    print("আপনি ভোটার এবং প্রোগ্রামার হতে প্রস্তুত! 🎉")\nelse:\n    print("আপনি এখন থেকেই কোডিং শিখছেন! 🚀")\n\nprint("--- ৫ এর ঘরের নামতা ---")\nfor i in range(1, 6):\n    print("৫ x", i, "=", 5 * i)`
+            }
+        };
+
+        // --- 2. 6 BEGINNER-TO-PRO LESSONS (পাঠশালা) ---
+        const lessons = [
+            {
+                id: 1,
+                badge: "পাঠ ১ • একদম শুরু",
+                title: "প্রথম ওয়েবপেজ ও লেখা সাজানো",
+                mode: "web",
+                desc: "<h1> দিয়ে বড় শিরোনাম এবং <p> ট্যাগ দিয়ে অনুচ্ছেদ লেখা শিখুন।",
+                code: {
+                    html: `<div style="padding:24px; font-family:sans-serif;">\n  <h1>আমার প্রথম ওয়েবপেজ</h1>\n  <p>আমি আজ থেকে কোডিং শুরু করলাম। এটি খুবই মজার!</p>\n</div>`,
+                    css: `body { background: #f8fafc; color: #0f172a; margin: 0; }\nh1 { color: #2563eb; }`,
+                    js: ``
+                }
+            },
+            {
+                id: 2,
+                badge: "পাঠ ২ • রঙ ও সুন্দর ডিজাইন",
+                title: "কার্ড ডিজাইন ও ব্যাকগ্রাউন্ড রঙ",
+                mode: "web",
+                desc: "CSS দিয়ে লেখার রঙ, বর্ডার-রেডিয়াস এবং সুন্দর কার্ড তৈরি করুন।",
+                code: {
+                    html: `<div class="profile">\n  <h2>তানভীর আহমেদ</h2>\n  <p>ভবিষ্যতের অ্যাপ ডেভেলপার 💻</p>\n</div>`,
+                    css: `body { background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }\n.profile { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; padding: 30px; border-radius: 24px; text-align: center; }`,
+                    js: ``
+                }
+            },
+            {
+                id: 3,
+                badge: "পাঠ ৩ • বাটন ও ক্লিক ম্যাজিক",
+                title: "বাটনে চাপ দিলে লেখা পরিবর্তন",
+                mode: "web",
+                desc: "JavaScript ফাংশন ব্যবহার করে বাটন ক্লিকে স্ক্রিনের লেখা বদলান।",
+                code: {
+                    html: `<div style="padding:30px; text-align:center; font-family:sans-serif;">\n  <h2 id="msg">বাটনে চাপ দিন 👇</h2>\n  <button onclick="magic()">জাদু দেখান ✨</button>\n</div>`,
+                    css: `button { padding: 14px 24px; font-size: 16px; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: bold; }`,
+                    js: `function magic() {\n  document.getElementById('msg').innerText = "অভিনন্দন! আপনার কোড কাজ করেছে 🎉";\n}`
+                }
+            },
+            {
+                id: 4,
+                badge: "পাঠ ৪ • ইনপুট বক্স ও ফর্ম",
+                title: "ব্যবহারকারীর নাম নিয়ে সালাম জানানো",
+                mode: "web",
+                desc: "<input> বক্স থেকে লেখা পড়ে স্ক্রিনে দেখানোর কৌশল শিখুন।",
+                code: {
+                    html: `<div style="padding:24px; font-family:sans-serif;">\n  <h3>আপনার নাম লিখুন:</h3>\n  <input id="userName" placeholder="যেমন: সাকিব">\n  <button onclick="sayHello()">সাবমিট</button>\n  <h2 id="reply" style="color:#2563eb;"></h2>\n</div>`,
+                    css: `input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 10px; box-sizing: border-box; }\nbutton { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #2563eb; color: white; font-weight: bold; }`,
+                    js: `function sayHello() {\n  const n = document.getElementById('userName').value;\n  document.getElementById('reply').innerText = "আসসালামু আলাইকুম, " + (n || "বন্ধু") + "!";\n}`
+                }
+            },
+            {
+                id: 5,
+                badge: "পাঠ ৫ • পাইথন শুরু ও হিসাব",
+                title: "পাইথনে ভেরিয়েবল ও গাণিতিক হিসাব",
+                mode: "logic",
+                desc: "বাংলা বা ইংরেজি ভেরিয়েবলে সংখ্যা রেখে যোগ, বিয়োগ, গুণ ও ভাগ করুন।",
+                code: {
+                    logic: `# পাইথনে সহজ হিসাব-নিকাশ\nদাম = 120\nপরিমাণ = 4\nমোট_বিল = দাম * পরিমাণ\n\nprint("প্রতিটির দাম:", দাম, "টাকা")\nprint("মোট বিল হয়েছে:", মোট_বিল, "টাকা")`
+                }
+            },
+            {
+                id: 6,
+                badge: "পাঠ ৬ • লুপ ও শর্ত (If-Else)",
+                title: "শর্ত যাচাই ও লুপ দিয়ে প্যাটার্ন তৈরি",
+                mode: "logic",
+                desc: "if-else দিয়ে সিদ্ধান্ত নেওয়া এবং for লুপ দিয়ে বারবার কাজ করা শিখুন।",
+                code: {
+                    logic: `নম্বর = 85\n\nif নম্বর >= 80:\n    print("ফলাফল: A+ (অসাধারণ!)")\nelse:\n    print("ফলাফল: পাস")\n\nprint("--- তারা দিয়ে সিঁড়ি ---")\nfor i in range(1, 6):\n    print("⭐ " * i)`
+                }
+            }
+        ];
+
+        // --- 3. READY MOBILE TEMPLATES (প্রজেক্ট গ্যালারি) ---
+        const templates = [
+            {
+                title: "🎮 ক্যাচ দ্য স্টার গেম",
+                desc: "মোবাইলের স্ক্রিনে ছুটে চলা তারায় ট্যাপ করে পয়েন্ট জিতুন!",
+                mode: "web",
+                code: {
+                    html: `<div class="hud">স্কোর: <span id="sc">0</span></div>\n<canvas id="cv"></canvas>`,
+                    css: `body { margin: 0; overflow: hidden; background: #090d16; font-family: sans-serif; }\n.hud { position: fixed; top: 14px; left: 16px; color: #facc15; font-size: 20px; font-weight: bold; }`,
+                    js: `const c = document.getElementById('cv');\nconst ctx = c.getContext('2d');\nc.width = window.innerWidth; c.height = window.innerHeight;\nlet x = 120, y = 150, vx = 3.2, vy = 3.2, sc = 0;\n\nc.addEventListener('pointerdown', (e) => {\n  if (Math.hypot(e.clientX - x, e.clientY - y) < 48) {\n    sc += 10;\n    document.getElementById('sc').innerText = sc;\n    vx *= 1.08; vy *= 1.08;\n  }\n});\n\nfunction loop() {\n  ctx.fillStyle = 'rgba(9,13,22,0.28)';\n  ctx.fillRect(0, 0, c.width, c.height);\n  x += vx; y += vy;\n  if (x < 28 || x > c.width - 28) vx *= -1;\n  if (y < 28 || y > c.height - 28) vy *= -1;\n  ctx.beginPath();\n  ctx.arc(x, y, 28, 0, Math.PI * 2);\n  ctx.fillStyle = '#facc15';\n  ctx.fill();\n  requestAnimationFrame(loop);\n}\nloop();`
+                }
+            },
+            {
+                title: "🧮 ডিজিটাল ক্যালকুলেটর",
+                desc: "সম্পূর্ণ কার্যকরী মোবাইল ক্যালকুলেটর অ্যাপ।",
+                mode: "web",
+                code: {
+                    html: `<div class="calc">\n  <input id="d" readonly value="0">\n  <div class="keys">\n    <button onclick="p('7')">7</button><button onclick="p('8')">8</button><button onclick="p('9')">9</button><button class="op" onclick="p('/')">÷</button>\n    <button onclick="p('4')">4</button><button onclick="p('5')">5</button><button onclick="p('6')">6</button><button class="op" onclick="p('*')">×</button>\n    <button onclick="p('1')">1</button><button onclick="p('2')">2</button><button onclick="p('3')">3</button><button class="op" onclick="p('-')">-</button>\n    <button class="c" onclick="cl()">C</button><button onclick="p('0')">0</button><button class="eq" onclick="eq()">=</button><button class="op" onclick="p('+')">+</button>\n  </div>\n</div>`,
+                    css: `body { margin: 0; background: #0f172a; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: monospace; }\n.calc { width: 88%; background: #1e293b; padding: 18px; border-radius: 24px; }\ninput { width: 100%; box-sizing: border-box; padding: 14px; font-size: 26px; text-align: right; border-radius: 14px; border: none; background: #0f172a; color: #38bdf8; margin-bottom: 14px; }\n.keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }\nbutton { padding: 16px 0; font-size: 18px; font-weight: bold; border: none; border-radius: 14px; background: #334155; color: white; }\n.op { background: #2563eb; } .eq { background: #10b981; } .c { background: #ef4444; }`,
+                    js: `const d = document.getElementById('d');\nfunction p(v) { d.value = d.value === '0' ? v : d.value + v; }\nfunction cl() { d.value = '0'; }\nfunction eq() { try { d.value = eval(d.value); } catch { d.value = 'Error'; } }`
+                }
+            },
+            {
+                title: "🎨 রঙিন আর্ট প্যাড",
+                desc: "আঙুল ঘুরিয়ে মোবাইল স্ক্রিনে নিয়ন রঙে ছবি আঁকুন।",
+                mode: "web",
+                code: {
+                    html: `<button onclick="wipe()">মুছুন 🧹</button>\n<canvas id="art"></canvas>`,
+                    css: `body { margin: 0; overflow: hidden; background: #000; }\nbutton { position: fixed; top: 12px; right: 12px; padding: 10px 16px; border-radius: 12px; border: none; background: #ef4444; color: white; font-weight: bold; }`,
+                    js: `const c = document.getElementById('art');\nconst ctx = c.getContext('2d');\nc.width = window.innerWidth; c.height = window.innerHeight;\nlet draw = false, hue = 0;\nc.addEventListener('pointerdown', () => draw = true);\nc.addEventListener('pointerup', () => draw = false);\nc.addEventListener('pointermove', (e) => {\n  if (!draw) return;\n  ctx.fillStyle = \`hsl(\${hue}, 100%, 55%)\`;\n  ctx.beginPath();\n  ctx.arc(e.clientX, e.clientY, 12, 0, Math.PI * 2);\n  ctx.fill();\n  hue = (hue + 5) % 360;\n});\nfunction wipe() { ctx.clearRect(0, 0, c.width, c.height); }`
+                }
+            },
+            {
+                title: "⏰ লাইভ ডিজিটাল ঘড়ি",
+                desc: "রিয়েল-টাইম সেকেন্ডসহ আধুনিক ডিজিটাল ঘড়ি।",
+                mode: "web",
+                code: {
+                    html: `<div class="clock-box">\n  <p>বর্তমান সময়</p>\n  <h1 id="time">00:00:00</h1>\n</div>`,
+                    css: `body { margin: 0; background: #090d16; color: #38bdf8; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: monospace; }\n.clock-box { text-align: center; border: 2px solid #1e293b; padding: 30px; border-radius: 26px; background: #0f172a; }\nh1 { font-size: 38px; margin: 8px 0 0; }`,
+                    js: `function tick() {\n  document.getElementById('time').innerText = new Date().toLocaleTimeString();\n}\nsetInterval(tick, 1000);\ntick();`
+                }
+            },
+            {
+                title: "🎲 লুডুর ছক্কা (Dice Roller)",
+                desc: "বাটনে চাপ দিলে ১ থেকে ৬ পর্যন্ত লুডুর চাল উঠবে।",
+                mode: "web",
+                code: {
+                    html: `<div class="box">\n  <div id="dice">🎲</div>\n  <button onclick="roll()">ছক্কা চালো</button>\n</div>`,
+                    css: `body { margin: 0; background: #1e1b4b; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }\n.box { text-align: center; }\n#dice { font-size: 80px; margin-bottom: 20px; }\nbutton { padding: 14px 28px; font-size: 18px; border-radius: 14px; border: none; background: #f59e0b; color: #000; font-weight: bold; }`,
+                    js: `const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];\nfunction roll() {\n  const r = Math.floor(Math.random() * 6);\n  document.getElementById('dice').innerText = faces[r];\n}`
+                }
+            }
+        ];
+
+        // --- 4. INTERACTIVE CHALLENGES ---
+        const challenges = [
+            {
+                id: "c1",
+                xp: 50,
+                title: "চ্যালেঞ্জ ১: প্রথম ওয়েব শিরোনাম",
+                mode: "web",
+                task: "index.html ফাইলে একটি <h1> ট্যাগ লিখুন এবং তার ভেতরে 'বাংলাদেশ' শব্দটি লিখুন।",
+                starter: {
+                    html: `<!-- নিচে <h1> ট্যাগের ভেতরে বাংলাদেশ লিখুন -->\n`,
+                    css: `body { font-family: sans-serif; text-align: center; padding-top: 60px; background: #064e3b; color: white; }`,
+                    js: ``
+                },
+                validate: () => /<h1[^>]*>[\s\S]*বাংলাদেশ[\s\S]*<\/h1>/i.test(state.code.html)
+            },
+            {
+                id: "c2",
+                xp: 75,
+                title: "চ্যালেঞ্জ ২: পাইথনে যোগফল নির্ণয়",
+                mode: "logic",
+                task: "পাইথন মোডে এমন কোড লিখুন যা টার্মিনালে ঠিক '250' প্রিন্ট করবে (যেমন: print(150 + 100))।",
+                starter: {
+                    logic: `# ১৫০ এবং ১০০ যোগ করে print() দিয়ে দেখান\n`
+                },
+                validate: () => state.consoleLogs.some(l => l.type === 'log' && l.text.trim() === '250')
+            },
+            {
+                id: "c3",
+                xp: 100,
+                title: "চ্যালেঞ্জ ৩: লুপ দিয়ে ১০ বার প্রিন্ট",
+                mode: "logic",
+                task: "for লুপ ব্যবহার করে টার্মিনালে কমপক্ষে ১০ লাইন আউটপুট প্রিন্ট করুন।",
+                starter: {
+                    logic: `# range(1, 11) ব্যবহার করে ১০ বার প্রিন্ট করুন\nfor i in range(1, 4):\n    print(i)`
+                },
+                validate: () => state.consoleLogs.filter(l => l.type === 'log').length >= 10
+            }
+        ];
+
+        // --- 5. DOM REFERENCES ---
+        const codeEditor = document.getElementById('codeEditor');
+        const highlightBackdrop = document.getElementById('highlightBackdrop');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const livePreviewFrame = document.getElementById('livePreviewFrame');
+        const phoneConsoleView = document.getElementById('phoneConsoleView');
+        const consoleOutputList = document.getElementById('consoleOutputList');
+
+        // --- 6. INITIALIZATION & STORAGE ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            updateLevelBadge();
+            renderLessons();
+            renderTemplates();
+            renderChallenges();
+            syncEditorFromState();
+            runCode(false);
+        });
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('codeguru_spacious_v3', JSON.stringify({
+                    code: state.code,
+                    xp: state.xp,
+                    completedChallenges: state.completedChallenges,
+                    autoRun: state.autoRun
+                }));
+                document.getElementById('saveStatusText').innerText = "সেভ হয়েছে ✓";
+            } catch (e) {}
+        }
+
+        function manualSaveCode() {
+            saveToStorage();
+            showToast("💾 আপনার সব কোড নিরাপদে সেভ করা হয়েছে!");
+        }
+
+        function loadFromStorage() {
+            try {
+                const raw = localStorage.getItem('codeguru_spacious_v3');
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (data.code) state.code = { ...state.code, ...data.code };
+                    if (typeof data.xp === 'number') state.xp = data.xp;
+                    if (Array.isArray(data.completedChallenges)) state.completedChallenges = data.completedChallenges;
+                    if (typeof data.autoRun === 'boolean') state.autoRun = data.autoRun;
+                }
+            } catch (e) {}
+            updateAutoRunButton();
+        }
+
+        // --- 7. REAL-TIME SYNTAX HIGHLIGHTING ---
+        function highlightSyntax(text, lang) {
+            let escaped = text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+
+            if (lang === 'html') {
+                escaped = escaped.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="tok-comm">$1</span>');
+                escaped = escaped.replace(/(&lt;\/?)([a-zA-Z0-9-]+)([\s\S]*?)(\/?&gt;)/g, (m, open, tag, attrs, close) => {
+                    const coloredAttrs = attrs.replace(/([a-zA-Z-]+)(=)("[^"]*"|'[^']*')/g, '<span class="tok-attr">$1</span>$2<span class="tok-str">$3</span>');
+                    return `${open}<span class="tok-tag">${tag}</span>${coloredAttrs}${close}`;
+                });
+            } else if (lang === 'css') {
+                escaped = escaped.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="tok-comm">$1</span>');
+                escaped = escaped.replace(/([a-zA-Z-]+)(\s*:)/g, '<span class="tok-prop">$1</span>$2');
+                escaped = escaped.replace(/(\b\d+(?:px|em|rem|%|vh|vw|s)?\b|#[0-9a-fA-F]{3,6})/g, '<span class="tok-num">$1</span>');
+            } else if (lang === 'js') {
+                escaped = escaped.replace(/(\/\/.*)/g, '<span class="tok-comm">$1</span>');
+                escaped = escaped.replace(/("[^"]*"|'[^']*'|`[^`]*`)/g, '<span class="tok-str">$1</span>');
+                escaped = escaped.replace(/\b(function|let|const|var|if|else|for|while|return|try|catch|new|true|false)\b/g, '<span class="tok-kw">$1</span>');
+                escaped = escaped.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
+            } else if (lang === 'logic') {
+                escaped = escaped.replace(/(#.*)/g, '<span class="tok-comm">$1</span>');
+                escaped = escaped.replace(/("[^"]*"|'[^']*')/g, '<span class="tok-str">$1</span>');
+                escaped = escaped.replace(/\b(if|elif|else|for|in|while|and|or|not|True|False)\b/g, '<span class="tok-kw">$1</span>');
+                escaped = escaped.replace(/\b(print|range|len|int|str)\b/g, '<span class="tok-fn">$1</span>');
+                escaped = escaped.replace(/\b(\d+)\b/g, '<span class="tok-num">$1</span>');
+            }
+
+            if (escaped.endsWith('\n')) escaped += ' ';
+            return escaped;
+        }
+
+        function refreshSyntaxAndLines() {
+            const lang = state.mode === 'web' ? state.activeWebTab : 'logic';
+            highlightBackdrop.innerHTML = highlightSyntax(codeEditor.value, lang);
+
+            const lineCount = codeEditor.value.split('\n').length;
+            let nums = '';
+            for (let i = 1; i <= lineCount; i++) nums += i + '<br>';
+            lineNumbers.innerHTML = nums;
+            updateCursorStats();
+        }
+
+        function updateCursorStats() {
+            const pos = codeEditor.selectionStart;
+            const before = codeEditor.value.substring(0, pos).split('\n');
+            document.getElementById('cursorStats').innerText = `লাইন ${before.length}, কলাম ${before[before.length - 1].length + 1}`;
+        }
+
+        // --- 8. EDITOR EVENTS, AUTO-PAIRING & UNDO ---
+        let autoRunTimer;
+        codeEditor.addEventListener('input', (e) => {
+            pushUndo();
+            if (e && e.inputType === 'insertText' && e.data) {
+                const pairs = { '(': ')', '{': '}', '[': ']', '"': '"', "'": "'" };
+                const close = pairs[e.data];
+                if (close) {
+                    const pos = codeEditor.selectionStart;
+                    if (codeEditor.value[pos] !== close) {
+                        codeEditor.value = codeEditor.value.slice(0, pos) + close + codeEditor.value.slice(pos);
+                        codeEditor.setSelectionRange(pos, pos);
+                    }
+                }
+            }
+            commitCodeChange();
+        });
+
+        codeEditor.addEventListener('scroll', () => {
+            highlightBackdrop.scrollTop = codeEditor.scrollTop;
+            highlightBackdrop.scrollLeft = codeEditor.scrollLeft;
+            lineNumbers.scrollTop = codeEditor.scrollTop;
+        });
+
+        codeEditor.addEventListener('click', updateCursorStats);
+        codeEditor.addEventListener('keyup', updateCursorStats);
+
+        function commitCodeChange() {
+            if (state.mode === 'web') state.code[state.activeWebTab] = codeEditor.value;
+            else state.code.logic = codeEditor.value;
+
+            refreshSyntaxAndLines();
+            saveToStorage();
+
+            if (state.autoRun) {
+                clearTimeout(autoRunTimer);
+                autoRunTimer = setTimeout(() => runCode(false), 500);
+            }
+        }
+
+        function syncEditorFromState() {
+            codeEditor.value = state.mode === 'web' ? (state.code[state.activeWebTab] || '') : (state.code.logic || '');
+            refreshSyntaxAndLines();
+        }
+
+        function pushUndo() {
+            const curr = codeEditor.value;
+            if (state.undoStack[state.undoStack.length - 1] !== curr) {
+                state.undoStack.push(curr);
+                if (state.undoStack.length > 40) state.undoStack.shift();
+            }
+        }
+
+        function undoEdit() {
+            if (state.undoStack.length > 0) {
+                codeEditor.value = state.undoStack.pop();
+                commitCodeChange();
+                showToast("↩ পূর্বের অবস্থায় ফিরে যাওয়া হয়েছে");
+            }
+        }
+
+        // --- 9. FIXED SYMBOL DOCK INSERTION HELPERS ---
+        function insertText(str) {
+            pushUndo();
+            const start = codeEditor.selectionStart;
+            const end = codeEditor.selectionEnd;
+            codeEditor.value = codeEditor.value.substring(0, start) + str + codeEditor.value.substring(end);
+            const nextPos = start + str.length;
+            codeEditor.focus();
+            codeEditor.setSelectionRange(nextPos, nextPos);
+            commitCodeChange();
+        }
+
+        function insertPaired(openStr, closeStr) {
+            pushUndo();
+            const start = codeEditor.selectionStart;
+            const end = codeEditor.selectionEnd;
+            const selected = codeEditor.value.substring(start, end);
+            const full = openStr + selected + closeStr;
+            codeEditor.value = codeEditor.value.substring(0, start) + full + codeEditor.value.substring(end);
+            const targetPos = start + openStr.length + selected.length;
+            codeEditor.focus();
+            codeEditor.setSelectionRange(targetPos, targetPos);
+            commitCodeChange();
+        }
+
+        function insertSmartNewline() {
+            pushUndo();
+            const start = codeEditor.selectionStart;
+            const before = codeEditor.value.substring(0, start);
+            const lastLine = before.split('\n').pop();
+            const match = lastLine.match(/^(\s*)/);
+            let indent = match ? match[1] : '';
+            if (lastLine.trim().endsWith('{') || lastLine.trim().endsWith(':')) indent += '    ';
+
+            const ins = '\n' + indent;
+            codeEditor.value = before + ins + codeEditor.value.substring(codeEditor.selectionEnd);
+            const pos = start + ins.length;
+            codeEditor.focus();
+            codeEditor.setSelectionRange(pos, pos);
+            commitCodeChange();
+        }
+
+        function moveCursor(delta) {
+            const pos = Math.max(0, Math.min(codeEditor.value.length, codeEditor.selectionStart + delta));
+            codeEditor.focus();
+            codeEditor.setSelectionRange(pos, pos);
+            updateCursorStats();
+        }
+
+        // --- 10. TOOLBAR ACTIONS (FORMAT, COPY, CLEAR, AUTO-RUN) ---
+        function toggleAutoRun() {
+            state.autoRun = !state.autoRun;
+            updateAutoRunButton();
+            saveToStorage();
+            showToast(state.autoRun ? "⚡ অটো-রান চালু হয়েছে" : "অটো-রান বন্ধ করা হয়েছে");
+        }
+
+        function updateAutoRunButton() {
+            const btn = document.getElementById('autoRunBtn');
+            if (state.autoRun) {
+                btn.className = "px-3 py-2 rounded-xl bg-sky-500/20 border border-sky-500/40 text-sky-300 font-bold text-xs sm:text-sm flex items-center gap-1 transition cursor-pointer";
+                btn.innerHTML = `<span>⚡</span> অটো-রান: চালু`;
+            } else {
+                btn.className = "px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 font-bold text-xs sm:text-sm flex items-center gap-1 transition cursor-pointer";
+                btn.innerHTML = `<span>⚡</span> অটো-রান: বন্ধ`;
+            }
+        }
+
+        function formatCode() {
+            pushUndo();
+            const raw = codeEditor.value;
+            if (state.mode === 'web' && (state.activeWebTab === 'css' || state.activeWebTab === 'js')) {
+                let indent = 0;
+                const lines = raw.replace(/;\s*/g, ';\n').replace(/\{\s*/g, ' {\n').replace(/\s*\}/g, '\n}\n').split('\n');
+                codeEditor.value = lines.map(l => l.trim()).filter(Boolean).map(line => {
+                    if (line.startsWith('}')) indent = Math.max(0, indent - 1);
+                    const out = '    '.repeat(indent) + line;
+                    if (line.endsWith('{')) indent++;
+                    return out;
+                }).join('\n');
+            } else {
+                codeEditor.value = raw.split('\n').map(l => l.replace(/\s+$/, '')).join('\n');
+            }
+            commitCodeChange();
+            showToast("✨ কোড সুন্দর করে সাজানো হয়েছে!");
+        }
+
+        function copyCurrentCode() {
+            codeEditor.select();
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+            showToast("📋 কোড কপি করা হয়েছে!");
+        }
+
+        function confirmClearEditor() {
+            document.getElementById('confirmClearBtn').onclick = () => {
+                pushUndo();
+                codeEditor.value = '';
+                commitCodeChange();
+                closeConfirmDialog();
+                showToast("🗑️ এডিটর পরিষ্কার করা হয়েছে");
+            };
+            document.getElementById('confirmDialog').classList.remove('hidden');
+        }
+
+        function closeConfirmDialog() {
+            document.getElementById('confirmDialog').classList.add('hidden');
+        }
+
+        // --- 11. MODE, TABS & PHONE SCREEN SWITCHING ---
+        function switchMode(newMode) {
+            state.mode = newMode;
+            const webBtn = document.getElementById('modeWebBtn');
+            const logicBtn = document.getElementById('modeLogicBtn');
+            const webTabs = document.getElementById('webTabsGroup');
+            const logicBadge = document.getElementById('logicTabBadge');
+
+            if (newMode === 'web') {
+                webBtn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer";
+                logicBtn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer";
+                webTabs.classList.remove('hidden');
+                logicBadge.classList.add('hidden');
+                document.getElementById('phoneUrlLabel').innerText = "localhost:3000/app";
+                switchPhoneScreen('app');
+            } else {
+                logicBtn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-emerald-600 text-white shadow-md flex items-center gap-1.5 cursor-pointer";
+                webBtn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5 cursor-pointer";
+                webTabs.classList.add('hidden');
+                logicBadge.classList.remove('hidden');
+                document.getElementById('phoneUrlLabel').innerText = "python://main.py";
+                switchPhoneScreen('console');
+            }
+
+            hideErrorCard();
+            syncEditorFromState();
+            runCode(false);
+        }
+
+        function switchWebTab(tab) {
+            state.activeWebTab = tab;
+            ['html', 'css', 'js'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold bg-[#141927] text-white border border-slate-500 flex items-center gap-1.5 cursor-pointer shadow";
+                } else {
+                    btn.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-mono font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-1.5 cursor-pointer";
+                }
+            });
+            syncEditorFromState();
+        }
+
+        function switchPhoneScreen(screen) {
+            state.phoneScreen = screen;
+            const appBtn = document.getElementById('phoneTabApp');
+            const conBtn = document.getElementById('phoneTabConsole');
+
+            if (screen === 'app') {
+                appBtn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-500 text-slate-950 transition";
+                conBtn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition";
+                livePreviewFrame.classList.remove('hidden');
+                phoneConsoleView.classList.add('hidden');
+            } else {
+                conBtn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 transition";
+                appBtn.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-400 hover:text-white transition";
+                phoneConsoleView.classList.remove('hidden');
+                livePreviewFrame.classList.add('hidden');
+            }
+        }
+
+        function togglePhoneFullscreen() {
+            state.isPhoneFullscreen = !state.isPhoneFullscreen;
+            const chassis = document.getElementById('phoneChassis');
+            const exitBtn = document.getElementById('exitPhoneFullscreenBtn');
+            if (state.isPhoneFullscreen) {
+                chassis.classList.add('phone-fullscreen');
+                exitBtn.classList.remove('hidden');
+            } else {
+                chassis.classList.remove('phone-fullscreen');
+                exitBtn.classList.add('hidden');
+            }
+        }
+
+        // --- 12. CODE EXECUTION ENGINE (WEB + BEGINNER PYTHON) ---
+        function runCode(notify = true) {
+            hideErrorCard();
+            clearConsole(false);
+
+            if (state.mode === 'web') {
+                executeWebApp();
+            } else {
+                executePythonLogic();
+            }
+
+            if (notify) {
+                showToast("▶ কোড রান হয়েছে! নিচের ফোনে ফলাফল দেখুন");
+            }
+        }
+
+        function executeWebApp() {
+            const { html, css, js } = state.code;
+            const bracketWarning = checkBracketBalance(js);
+            if (bracketWarning) showErrorCard(bracketWarning);
+
+            const doc = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>${css}</style>
+                </head>
+                <body>
+                    ${html}
+                    <script>
+                        const _log = console.log;
+                        console.log = function(...args) {
+                            window.parent.postMessage({ type: 'phone-log', msg: args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ') }, '*');
+                            _log.apply(console, args);
+                        };
+                        window.onerror = function(msg, src, line) {
+                            window.parent.postMessage({ type: 'phone-err', msg: msg + ' (লাইন ' + line + ')' }, '*');
+                        };
+                        window.alert = function(msg) {
+                            window.parent.postMessage({ type: 'phone-alert', msg: String(msg) }, '*');
+                        };
+                    <\/script>
+                    <script>
+                        try {
+                            ${js}
+                        } catch (e) {
+                            window.parent.postMessage({ type: 'phone-err', msg: e.message }, '*');
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `;
+            livePreviewFrame.srcdoc = doc;
+        }
+
+        window.addEventListener('message', (e) => {
+            if (!e.data || !e.data.type) return;
+            if (e.data.type === 'phone-log') {
+                addConsoleLine(e.data.msg, 'log');
+            } else if (e.data.type === 'phone-err') {
+                addConsoleLine("ত্রুটি: " + e.data.msg, 'error');
+                showErrorCard(translateError(e.data.msg));
+            } else if (e.data.type === 'phone-alert') {
+                addConsoleLine("🔔 বার্তা: " + e.data.msg, 'info');
+                showToast("🔔 " + e.data.msg);
+            }
+        });
+
+        function executePythonLogic() {
+            switchPhoneScreen('console');
+            const src = state.code.logic;
+            if (!src.trim()) {
+                addConsoleLine("কোনো কোড লেখা হয়নি। উপরে লিখুন: print(\"হ্যালো!\")", 'info');
+                return;
+            }
+
+            try {
+                const jsCode = transpilePythonToJS(src);
+                const pyPrint = (...args) => addConsoleLine(args.join(' '), 'log');
+                const pyRange = (start, end, step = 1) => {
+                    if (end === undefined) { end = start; start = 0; }
+                    const res = [];
+                    if (step > 0) { for (let i = start; i < end; i += step) res.push(i); }
+                    else if (step < 0) { for (let i = start; i > end; i += step) res.push(i); }
+                    return res;
+                };
+
+                const fn = new Function('print', 'range', jsCode);
+                fn(pyPrint, pyRange);
+
+                if (state.consoleLogs.length === 0) {
+                    addConsoleLine("✅ কোড চলেছে! ফলাফল দেখতে print(...) ব্যবহার করুন।", 'info');
+                }
+            } catch (err) {
+                const bnErr = translateError(err.message);
+                addConsoleLine("❌ ভুল: " + bnErr, 'error');
+                showErrorCard(bnErr);
+            }
+        }
+
+        function handleTerminalCommand(e) {
+            e.preventDefault();
+            const inp = document.getElementById('terminalInput');
+            const cmd = inp.value.trim();
+            if (!cmd) return;
+            addConsoleLine("> " + cmd, 'info');
+            try {
+                const out = Function(`"use strict"; return (${cmd})`)();
+                addConsoleLine(String(out), 'log');
+            } catch (err) {
+                addConsoleLine("ত্রুটি: " + translateError(err.message), 'error');
+            }
+            inp.value = '';
+        }
+
+        function transpilePythonToJS(src) {
+            const lines = src.split('\n');
+            let out = [];
+            let indentStack = [0];
+            const vars = new Set();
+
+            out.push(`function __mul(a, b) { if (typeof a === 'string' && typeof b === 'number') return a.repeat(Math.max(0, b)); if (typeof b === 'string' && typeof a === 'number') return b.repeat(Math.max(0, a)); return a * b; }`);
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = stripComments(lines[i]);
+                if (!line.trim()) continue;
+                const indent = line.match(/^(\s*)/)[1].length;
+                let trimmed = line.trim();
+
+                while (indent < indentStack[indentStack.length - 1]) {
+                    indentStack.pop();
+                    out.push('}');
+                }
+
+                trimmed = trimmed.replace(/("[^"]*"|'[^']*')\s*\*\s*([a-zA-Z0-9_\u0980-\u09FF]+)/g, '__mul($1, $2)');
+
+                if (trimmed.startsWith('if ') && trimmed.endsWith(':')) {
+                    const cond = trimmed.slice(3, -1).replace(/\band\b/g, '&&').replace(/\bor\b/g, '||').replace(/\bnot\b/g, '!');
+                    out.push(`if (${cond}) {`);
+                    indentStack.push(indent + 4);
+                } else if (trimmed.startsWith('elif ') && trimmed.endsWith(':')) {
+                    const cond = trimmed.slice(5, -1).replace(/\band\b/g, '&&').replace(/\bor\b/g, '||');
+                    out.push(`else if (${cond}) {`);
+                    indentStack.push(indent + 4);
+                } else if (trimmed === 'else:') {
+                    out.push(`else {`);
+                    indentStack.push(indent + 4);
+                } else if (trimmed.startsWith('for ') && trimmed.includes(' in ') && trimmed.endsWith(':')) {
+                    const m = trimmed.match(/^for\s+([a-zA-Z0-9_\u0980-\u09FF]+)\s+in\s+(.+):$/);
+                    if (m) {
+                        out.push(`for (let ${m[1]} of ${m[2]}) {`);
+                        indentStack.push(indent + 4);
+                    } else {
+                        throw new Error(`লাইন ${i + 1}: for লুপ লেখার নিয়ম ঠিক হয়নি।`);
+                    }
+                } else if (trimmed.startsWith('while ') && trimmed.endsWith(':')) {
+                    const cond = trimmed.slice(6, -1);
+                    out.push(`let __g_${i} = 0; while (${cond}) { if (++__g_${i} > 5000) throw new Error("অসীম লুপ থামানো হয়েছে!");`);
+                    indentStack.push(indent + 4);
+                } else {
+                    const assign = trimmed.match(/^([a-zA-Z_\u0980-\u09FF][a-zA-Z0-9_\u0980-\u09FF]*)\s*=\s*(.+)$/);
+                    if (assign && !trimmed.includes('==')) {
+                        const name = assign[1], val = assign[2];
+                        if (!vars.has(name)) {
+                            vars.add(name);
+                            out.push(`let ${name} = ${val};`);
+                        } else {
+                            out.push(`${name} = ${val};`);
+                        }
+                    } else {
+                        out.push(trimmed + ';');
+                    }
+                }
+            }
+
+            while (indentStack.length > 1) {
+                indentStack.pop();
+                out.push('}');
+            }
+            return out.join('\n');
+        }
+
+        function stripComments(line) {
+            let s = false, d = false;
+            for (let i = 0; i < line.length; i++) {
+                if (line[i] === "'" && !d) s = !s;
+                else if (line[i] === '"' && !s) d = !d;
+                else if (line[i] === '#' && !s && !d) return line.slice(0, i);
+            }
+            return line;
+        }
+
+        function checkBracketBalance(code) {
+            for (const [o, c] of [['(', ')'], ['{', '}'], ['[', ']']]) {
+                const oc = code.split(o).length - 1;
+                const cc = code.split(c).length - 1;
+                if (oc > cc) return `কোডে '${o}' চিহ্নটি খোলা হয়েছে কিন্তু '${c}' দিয়ে বন্ধ করা হয়নি!`;
+                if (cc > oc) return `কোডে একটি অতিরিক্ত '${c}' চিহ্ন পড়ে গেছে!`;
+            }
+            return null;
+        }
+
+        function translateError(msg) {
+            if (!msg) return "কোডে একটি সিনট্যাক্স ভুল হয়েছে।";
+            const s = String(msg);
+            if (s.includes("Unexpected end of input")) return "কোডের শেষে কোনো ব্র্যাকেট '}' বা ')' বন্ধ করতে ভুলে গেছেন!";
+            if (s.includes("Unexpected token")) return "কোডের কোথাও ভুল চিহ্ন বসেছে বা কোটেশন (\" \") ঠিকমতো বন্ধ হয়নি।";
+            if (s.includes("is not defined")) return `'${s.split(' ')[0]}' নামটি আগে তৈরি করা হয়নি অথবা লেখাটি কোটেশন (" ") এর ভেতরে দিতে ভুলে গেছেন!`;
+            return s;
+        }
+
+        function addConsoleLine(text, type = 'log') {
+            if (state.consoleLogs.length === 0) consoleOutputList.innerHTML = '';
+            state.consoleLogs.push({ text, type });
+
+            const div = document.createElement('div');
+            if (type === 'error') {
+                div.className = "bg-red-950/70 border-l-4 border-red-500 text-red-300 px-3 py-2 rounded-r-xl text-xs sm:text-sm";
+                div.textContent = text;
+            } else if (type === 'info') {
+                div.className = "bg-sky-950/60 border-l-4 border-sky-400 text-sky-200 px-3 py-1.5 rounded-r-xl text-xs";
+                div.textContent = text;
+            } else {
+                div.className = "text-emerald-300 border-b border-slate-800/80 pb-1.5 flex items-start gap-2";
+                div.innerHTML = `<span class="text-slate-500 select-none">❯</span> <span>${escapeHtml(text)}</span>`;
+            }
+            consoleOutputList.appendChild(div);
+            consoleOutputList.scrollTop = consoleOutputList.scrollHeight;
+
+            const badge = document.getElementById('phoneConsoleCount');
+            badge.innerText = state.consoleLogs.length;
+            badge.classList.remove('hidden');
+        }
+
+        function clearConsole(placeholder = true) {
+            state.consoleLogs = [];
+            document.getElementById('phoneConsoleCount').classList.add('hidden');
+            if (placeholder) {
+                consoleOutputList.innerHTML = `<div class="text-slate-500 italic text-xs">টার্মিনাল পরিষ্কার করা হয়েছে...</div>`;
+            }
+        }
+
+        function showErrorCard(msg) {
+            document.getElementById('errorHelperText').innerText = msg;
+            document.getElementById('errorHelperCard').classList.remove('hidden');
+        }
+
+        function hideErrorCard() {
+            document.getElementById('errorHelperCard').classList.add('hidden');
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // --- 13. MODALS: LESSONS, PROJECTS, CHALLENGES ---
+        function renderLessons() {
+            document.getElementById('lessonsList').innerHTML = lessons.map(l => `
+                <div class="bg-[#182035] border border-slate-700/80 rounded-2xl p-4 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">${l.badge}</span>
+                        <span class="text-xs text-slate-400 font-mono">${l.mode === 'web' ? 'HTML/CSS/JS' : 'Python'}</span>
+                    </div>
+                    <h3 class="text-base font-bold text-white">${l.title}</h3>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${l.desc}</p>
+                    <button onclick="loadLesson(${l.id})" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer">
+                        <span>✍️</span> এডিটরে লোড করুন
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadLesson(id) {
+            const l = lessons.find(x => x.id === id);
+            if (!l) return;
+            exitChallenge();
+            if (l.mode === 'web') {
+                state.code.html = l.code.html || '';
+                state.code.css = l.code.css || '';
+                state.code.js = l.code.js || '';
+                switchWebTab('html');
+                switchMode('web');
+            } else {
+                state.code.logic = l.code.logic || '';
+                switchMode('logic');
+            }
+            saveToStorage();
+            closeModal('lessonsModal');
+            showToast(`📚 "${l.title}" লোড হয়েছে!`);
+        }
+
+        function renderTemplates() {
+            document.getElementById('templatesList').innerHTML = templates.map((t, i) => `
+                <div class="bg-[#182035] border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                    <div>
+                        <span class="text-[11px] font-bold text-purple-400 uppercase tracking-wider">মোবাইল অ্যাপ টেমপ্লেট</span>
+                        <h3 class="text-base font-bold text-white mt-1">${t.title}</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">${t.desc}</p>
+                    </div>
+                    <button onclick="loadTemplate(${i})" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition cursor-pointer">
+                        <span>▶</span> এডিটরে খুলুন
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadTemplate(i) {
+            const t = templates[i];
+            if (!t) return;
+            exitChallenge();
+            state.code.html = t.code.html || '';
+            state.code.css = t.code.css || '';
+            state.code.js = t.code.js || '';
+            switchWebTab('html');
+            switchMode('web');
+            saveToStorage();
+            closeModal('templatesModal');
+            showToast(`${t.title} লোড হয়েছে! নিচের ফোনে দেখুন`);
+        }
+
+        function renderChallenges() {
+            document.getElementById('challengesList').innerHTML = challenges.map(c => {
+                const done = state.completedChallenges.includes(c.id);
+                return `
+                    <div class="bg-[#182035] border ${done ? 'border-emerald-500/50' : 'border-slate-700/80'} rounded-2xl p-4 space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${done ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">
+                                ${done ? '✓ সম্পন্ন হয়েছে' : `+${c.xp} XP পুরস্কার`}
+                            </span>
+                            <span class="text-xs text-slate-400 font-mono">${c.mode === 'web' ? 'Web App' : 'Python'}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">${c.title}</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${c.task}</p>
+                        <button onclick="startChallenge('${c.id}')" class="w-full py-2.5 rounded-xl ${done ? 'bg-slate-700 text-slate-200' : 'bg-emerald-600 hover:bg-emerald-500 text-white'} font-bold text-xs sm:text-sm transition cursor-pointer">
+                            ${done ? 'আবার প্র্যাকটিস করুন' : 'চ্যালেঞ্জ শুরু করুন'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startChallenge(id) {
+            const c = challenges.find(x => x.id === id);
+            if (!c) return;
+            state.activeChallengeId = id;
+            document.getElementById('challengeTitleDisplay').innerText = c.title;
+            document.getElementById('challengeTaskDisplay').innerText = c.task;
+            document.getElementById('activeChallengeBanner').classList.remove('hidden');
+
+            if (c.mode === 'web') {
+                state.code.html = c.starter.html || '';
+                state.code.css = c.starter.css || '';
+                state.code.js = c.starter.js || '';
+                switchWebTab('html');
+                switchMode('web');
+            } else {
+                state.code.logic = c.starter.logic || '';
+                switchMode('logic');
+            }
+            closeModal('challengesModal');
+            showToast("🎯 চ্যালেঞ্জ শুরু হয়েছে! কাজ শেষে 'যাচাই করুন' চাপুন");
+        }
+
+        function verifyActiveChallenge() {
+            const c = challenges.find(x => x.id === state.activeChallengeId);
+            if (!c) return;
+            runCode(false);
+            if (c.validate()) {
+                if (!state.completedChallenges.includes(c.id)) {
+                    state.completedChallenges.push(c.id);
+                    state.xp += c.xp;
+                    updateLevelBadge();
+                    saveToStorage();
+                }
+                renderChallenges();
+                showToast(`🎉 অভিনন্দন! আপনি +${c.xp} XP অর্জন করেছেন!`);
+                exitChallenge();
+            } else {
+                showToast("❌ এখনো শর্ত পূরণ হয়নি! নির্দেশনা দেখে আবার চেষ্টা করুন।");
+            }
+        }
+
+        function exitChallenge() {
+            state.activeChallengeId = null;
+            document.getElementById('activeChallengeBanner').classList.add('hidden');
+        }
+
+        function updateLevelBadge() {
+            const lvl = Math.floor(state.xp / 100) + 1;
+            document.getElementById('levelBadge').innerText = `লেভেল ${lvl} • ${state.xp} XP`;
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            t.classList.remove('opacity-0');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.add('opacity-0'), 2800);
+        }
+    </script>
+</body>
+</html>
+```
