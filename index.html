@@ -264,6 +264,32 @@ footer {
     font-size: 13px;
   }
 }
+
+/* Entertainment gallery */
+.video-gallery{position:relative;overflow:hidden}
+.video-gallery:before{content:"";position:absolute;inset:-80px;background:radial-gradient(circle at 15% 15%,#6366f155,transparent 35%),radial-gradient(circle at 85% 80%,#06b6d455,transparent 35%);pointer-events:none;animation:galleryGlow 12s ease-in-out infinite alternate}
+@keyframes galleryGlow{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.12) rotate(5deg)}}
+.gallery-head,.gallery-tools,.video-grid,.gallery-note{position:relative;z-index:1}
+.gallery-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.gallery-pill{font-size:12px;padding:7px 11px;border-radius:30px;background:#312e81;color:#c7d2fe}
+.gallery-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.gallery-tools input,.gallery-tools select{min-width:0;flex:1;padding:11px;border-radius:9px;border:1px solid #475569;background:#0b1220;color:#f8fafc}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px}
+.video-card{overflow:hidden;border:1px solid #475569;border-radius:15px;background:linear-gradient(145deg,#263449,#111827);animation:cardIn .55s both;transition:transform .25s,border-color .25s,box-shadow .25s}
+.video-card:hover{transform:translateY(-5px);border-color:#818cf8;box-shadow:0 12px 28px #0006}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.video-frame{width:100%;aspect-ratio:16/9;display:block;background:#020617;object-fit:cover}
+.video-info{padding:11px}
+.video-info h4{margin:0 0 6px;font-size:15px}
+.video-meta{font-size:12px;color:#a5b4fc;margin-bottom:10px}
+.video-actions{display:flex;gap:7px}
+.video-actions a{flex:1;text-align:center;text-decoration:none;color:white;padding:10px 7px;border-radius:8px;font-size:13px;font-weight:bold;background:#4f46e5}
+.video-actions a.download{background:#047857}
+.video-actions a:hover{filter:brightness(1.18)}
+.gallery-note{font-size:12px;line-height:1.7;color:#cbd5e1;margin-top:12px}
+.gallery-empty{grid-column:1/-1;text-align:center;padding:25px;color:#cbd5e1}
+@media(max-width:480px){.video-grid{grid-template-columns:1fr 1fr;gap:8px}.video-info{padding:8px}.video-info h4{font-size:13px}.video-actions{flex-direction:column}.video-actions a{padding:8px}}
+
 </style>
 </head>
 
@@ -428,6 +454,22 @@ footer {
   </section>
 
 </div>
+
+
+<section class="panel video-gallery" id="entertainment">
+  <div class="gallery-head">
+    <div><h3>🎬 Ready-Made Videos</h3><div class="status">বিরতি নাও, ভিডিও দেখো</div></div>
+    <span class="gallery-pill">ভিডিও গ্যালারি</span>
+  </div>
+  <div class="gallery-tools">
+    <input id="videoSearch" type="search" placeholder="ভিডিও খুঁজুন...">
+    <select id="videoCategory" aria-label="ভিডিও ক্যাটাগরি">
+      <option value="all">সব ক্যাটাগরি</option><option value="animation">অ্যানিমেশন</option><option value="adventure">অ্যাডভেঞ্চার</option><option value="technology">টেকনোলজি</option><option value="nature">প্রকৃতি</option>
+    </select>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+  <div class="gallery-note">নোট: এখানে অনলাইন নমুনা ভিডিওর লিংক ব্যবহার করা হয়েছে। ভিডিও চালাতে ইন্টারনেট লাগবে। Download বোতামটি মূল ভিডিও ফাইলের লিংক খুলবে; কিছু ব্রাউজার বা উৎসে ডাউনলোড সরাসরি নাও হতে পারে। ভিডিওর আসল রেজোলিউশন উৎসভেদে আলাদা—সবগুলো 4K/8K নয়।</div>
+</section>
 
 <footer>
   আমার অ্যাপ নির্মাতা ❤️
@@ -1145,6 +1187,46 @@ document.querySelectorAll("[data-size]").forEach(button => {
 // ===================================
 
 runApp();
+
+
+/* Ready-made sample video gallery */
+const readyVideos = [
+ {title:"Big Buck Bunny",category:"animation",tag:"অ্যানিমেশন",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"},
+ {title:"Elephant's Dream",category:"animation",tag:"অ্যানিমেশন",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"},
+ {title:"For Bigger Blazes",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"},
+ {title:"For Bigger Escape",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"},
+ {title:"For Bigger Fun",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"},
+ {title:"For Bigger Joyrides",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"},
+ {title:"For Bigger Meltdowns",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"},
+ {title:"Sintel",category:"animation",tag:"অ্যানিমেশন",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"},
+ {title:"Tears of Steel",category:"technology",tag:"টেকনোলজি / Sci-Fi",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"},
+ {title:"Subaru on Street and Dirt",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"},
+ {title:"We Are Going On Bullrun",category:"adventure",tag:"অ্যাডভেঞ্চার",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"},
+ {title:"What Car Can You Get",category:"technology",tag:"টেকনোলজি",url:"https://storage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGet.mp4"}
+];
+function renderReadyVideos(){
+ const grid=document.getElementById("videoGrid");
+ if(!grid)return;
+ const term=(document.getElementById("videoSearch")?.value||"").toLowerCase();
+ const category=document.getElementById("videoCategory")?.value||"all";
+ const filtered=readyVideos.filter(v=>(category==="all"||v.category===category)&&(v.title+" "+v.tag).toLowerCase().includes(term));
+ grid.innerHTML="";
+ if(!filtered.length){grid.innerHTML='<div class="gallery-empty">কোনো ভিডিও পাওয়া যায়নি।</div>';return;}
+ filtered.forEach((v,i)=>{
+  const card=document.createElement("article");card.className="video-card";card.style.animationDelay=(i*35)+"ms";
+  const video=document.createElement("video");video.className="video-frame";video.src=v.url;video.controls=true;video.preload="none";video.playsInline=true;video.setAttribute("aria-label",v.title);
+  const info=document.createElement("div");info.className="video-info";
+  const title=document.createElement("h4");title.textContent=v.title;
+  const meta=document.createElement("div");meta.className="video-meta";meta.textContent=v.tag+" • অনলাইন ভিডিও";
+  const actions=document.createElement("div");actions.className="video-actions";
+  const play=document.createElement("a");play.href=v.url;play.target="_blank";play.rel="noopener noreferrer";play.textContent="↗ আলাদা করে খোলো";
+  const download=document.createElement("a");download.className="download";download.href=v.url;download.target="_blank";download.rel="noopener noreferrer";download.download="";download.textContent="⬇ ডাউনলোড";
+  actions.append(play,download);info.append(title,meta,actions);card.append(video,info);grid.append(card);
+ });
+}
+document.getElementById("videoSearch")?.addEventListener("input",renderReadyVideos);
+document.getElementById("videoCategory")?.addEventListener("change",renderReadyVideos);
+renderReadyVideos();
 
 </script>
 
